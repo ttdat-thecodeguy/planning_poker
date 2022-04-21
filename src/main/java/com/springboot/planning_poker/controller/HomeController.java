@@ -1,5 +1,6 @@
 package com.springboot.planning_poker.controller;
 
+import com.opencsv.exceptions.CsvValidationException;
 import com.springboot.planning_poker.model.business.IUser;
 import com.springboot.planning_poker.model.enity.User;
 import com.springboot.planning_poker.model.payload.request.LoginRequest;
@@ -27,6 +28,14 @@ public class HomeController {
     public ResponseEntity<?> login(@RequestBody LoginRequest userLogin){
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userLogin.getEmail(), userLogin.getPassword()));
         return ResponseEntity.ok(new LoginResponse(jwtUtils.generateToken(userLogin.getEmail())));
+    @PostMapping("/issue/import-csv")
+    public ResponseEntity<?> importAsCSV(MultipartFile file) throws IOException, CsvValidationException{
+		File f = new File(file.getOriginalFilename());
+		FileOutputStream fos = new FileOutputStream(f);
+		fos.write(file.getBytes());
+		fos.close();
+		issues.downloadIssuesAsCSV(f);
+		return ResponseEntity.ok("Import done");
     }
 }
 
