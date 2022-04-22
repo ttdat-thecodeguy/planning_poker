@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.StringTokenizer;
 import java.util.function.Function;
 @Component
 public class JwtUtils {
@@ -21,7 +22,15 @@ public class JwtUtils {
 
     //retrieve username from jwt token
     public String getUsernameFromToken(String token) {
-        return getClaimFromToken(token, Claims::getSubject);
+        String subject[] = getClaimFromToken(token, Claims::getSubject).split("-",2);
+        return subject[1];
+    }
+
+    //get id from token
+    public Long getUserIdFromToken(String token) {
+        if(token == null) return null;
+        StringTokenizer subject = new StringTokenizer(getClaimFromToken(token, Claims::getSubject), "-");
+        return Long.valueOf(subject.nextToken());
     }
 
     //retrieve expiration date from jwt token
@@ -55,7 +64,7 @@ public class JwtUtils {
         return doGenerateToken(claims, email);
     }
 
-    public String generateToken(String email, String id) {
+    public String generateToken(String email, Long id) {
         Map<String, Object> claims = new HashMap<>();
         return doGenerateToken(claims, id + "-" + email);
     }

@@ -3,30 +3,33 @@ package com.springboot.planning_poker.controller;
 import com.springboot.planning_poker.model.business.IUser;
 import com.springboot.planning_poker.model.enity.User;
 import com.springboot.planning_poker.model.payload.request.LoginRequest;
-import com.springboot.planning_poker.model.payload.response.LoginResponse;
-import com.springboot.planning_poker.model.utils.JwtUtils;
-import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+
 import org.springframework.web.bind.annotation.*;
 
-@RestController @RequestMapping(value = "/api") @RequiredArgsConstructor
-public class HomeController {
 
-     private final AuthenticationManager authenticationManager;
-     private final IUser userBus;
-     private final JwtUtils jwtUtils;
+@RestController @RequestMapping(value = "/api") @Slf4j
+public class HomeController {
+    @Autowired private IUser userBus;
 
     @PostMapping("/signup")
-    public ResponseEntity<?> signup(@RequestBody User user){
+    public ResponseEntity<?> signup(@RequestBody User user) throws Exception {
         return ResponseEntity.ok(userBus.signup(user));
     }
 
-    @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginRequest userLogin){
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userLogin.getEmail(), userLogin.getPassword()));
-        return ResponseEntity.ok(new LoginResponse(jwtUtils.generateToken(userLogin.getEmail())));
+    @PostMapping("/login") @CrossOrigin(origins="*", maxAge=3600)
+    public ResponseEntity<?> login(@RequestBody LoginRequest userLogin) throws Exception {
+        log.info("Login");
+        return ResponseEntity.ok(userBus.login(userLogin));
+    }
+
+    @PostMapping("/signup-as-guest")
+    public ResponseEntity<?> signUpAsGuest(@RequestBody User user,
+                                           @RequestParam String tableId,
+                                           @RequestParam(required = false) Boolean isSpectator) {
+        return ResponseEntity.ok(userBus.signupAsGuest(user, isSpectator, tableId));
     }
 }
 

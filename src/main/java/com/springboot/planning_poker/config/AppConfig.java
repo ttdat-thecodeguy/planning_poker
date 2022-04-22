@@ -1,9 +1,7 @@
 package com.springboot.planning_poker.config;
 
-import com.springboot.planning_poker.model.business.IUser;
-import com.springboot.planning_poker.model.business.impl.UserService;
 import com.springboot.planning_poker.model.filter.TokenFilter;
-import com.springboot.planning_poker.model.payload.response.LoginResponse;
+import com.springboot.planning_poker.model.payload.response.UserResponse;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -11,6 +9,8 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -22,11 +22,14 @@ public class AppConfig implements WebMvcConfigurer {
 
     @Bean
     @Scope(value = WebApplicationContext.SCOPE_REQUEST, proxyMode = ScopedProxyMode.TARGET_CLASS)
-    public LoginResponse loginResponse() {
-        return new LoginResponse();
+    public UserResponse loginResponse() {
+        return new UserResponse();
     }
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new TokenFilter(loginResponse())).addPathPatterns("/api/user/**");
+        registry.addInterceptor(new TokenFilter(loginResponse())).addPathPatterns("/api/user/**","/api/table/**");
     }
+
+
+
 }

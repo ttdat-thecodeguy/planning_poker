@@ -2,7 +2,7 @@ package com.springboot.planning_poker.controller;
 
 import com.springboot.planning_poker.model.business.IUser;
 import com.springboot.planning_poker.model.payload.request.UserUpdateRequest;
-import com.springboot.planning_poker.model.payload.response.LoginResponse;
+import com.springboot.planning_poker.model.payload.response.UserResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +20,8 @@ cơ chế tải ảnh : send picture to frontend -> edit it-> send to storage
  */
 public class UserController {
     @Autowired private IUser userBus;
-    @Autowired private LoginResponse response;
+    @Autowired private UserResponse response;
+
     @GetMapping(value = "/")
     public ResponseEntity<?> getUsers() {
         log.info(response.getToken());
