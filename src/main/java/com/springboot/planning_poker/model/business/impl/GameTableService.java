@@ -8,6 +8,7 @@ import com.springboot.planning_poker.model.responsitory.TableRepo;
 import com.springboot.planning_poker.model.responsitory.UserRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -15,11 +16,12 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 
-@Component
+@Service
 @RequiredArgsConstructor
 @Transactional
 public class GameTableService implements ITable {
     private final TableRepo tableRepo;
+    private final UserRepo userRepo;
     @Override
     public GameTable addTable(GameTable table, Long userId) {
         if(userId != null){
@@ -39,7 +41,8 @@ public class GameTableService implements ITable {
     @Override
     public void addUserToTable(TableUpdate tableUpdate) {
         GameTable gameTable = tableRepo.getById(tableUpdate.getTableId());
-        gameTable.addUsersJoin(new User(tableUpdate.getUserId()));
+        User user = userRepo.getById(tableUpdate.getUserId());
+        gameTable.addUsersJoin(user);
     }
 
     @Override
@@ -54,9 +57,10 @@ public class GameTableService implements ITable {
     }
 
     @Override @Transactional
-    public List<Long> removeUserFromTable(String id, Long userId) {
+    public List<Long> removeUserFromTableAndGetList(String id, Long userId) {
         GameTable gameTable = tableRepo.getById(id);
-        return gameTable.removeUsersJoin(new User(userId)).getListUserId();
+        User user = userRepo.getById(userId);
+        return gameTable.removeUsersJoin(user).getListUserId();
     }
 
 }

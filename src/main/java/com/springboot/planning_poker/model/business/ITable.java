@@ -14,5 +14,5 @@ public interface ITable {
     void addUserToTable(TableUpdate tableUpdate);
     GameTable getTableById(String id);
     List<Long> getUserJoinTable(String id);
-    List<Long> removeUserFromTable(String id, Long userId);
+    List<Long> removeUserFromTableAndGetList(String id, Long userId);
 }
