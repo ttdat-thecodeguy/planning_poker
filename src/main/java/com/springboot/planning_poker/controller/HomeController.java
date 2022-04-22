@@ -1,5 +1,6 @@
 package com.springboot.planning_poker.controller;
 
+import com.opencsv.exceptions.CsvValidationException;
 import com.springboot.planning_poker.model.business.IUser;
 import com.springboot.planning_poker.model.enity.User;
 import com.springboot.planning_poker.model.payload.request.LoginRequest;
