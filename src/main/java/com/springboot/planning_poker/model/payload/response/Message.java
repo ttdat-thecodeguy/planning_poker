@@ -1,4 +1,4 @@
-package com.springboot.planning_poker.model.message;
+package com.springboot.planning_poker.model.payload.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -14,10 +14,24 @@ public class Message {
 
     public enum MessageType {
         JOIN,
+
+        /* ---GAME--- */
+
+        /// SELECTED CARD
         SELECTED,
-        CHANGE_CARD,
+        UNSELECTED_CARD,
+        /// SPECTATOR MODE
         ACTIVE_SPECTATOR,
         DEACTIVATE_SPECTATOR,
+        /// END GAME
+        SHOW_CARD,
+        /// RESTART GAME
+        START_NEW_VOTE,
+        START_NEW_VOTE_WITH_ISSUE,
+
+        /* ---ISSUE---- */
+        ADD_ISSUE,
+        DELETE_ALL_ISSUE,
         LEAVE
     }
 }

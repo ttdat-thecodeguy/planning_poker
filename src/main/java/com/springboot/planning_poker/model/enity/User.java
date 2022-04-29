@@ -37,8 +37,8 @@ public class User {
     @ManyToMany(fetch = FetchType.LAZY)
     private Set<Role> roles = new HashSet<>();
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = {  CascadeType.MERGE })
-    private Set<GameTable> tables = new HashSet<>();
+//    @ManyToMany(fetch = FetchType.LAZY, cascade = {  CascadeType.MERGE })
+//    private Set<GameTable> tables = new HashSet<>();
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     private Set<Voting> votings = new HashSet<>();

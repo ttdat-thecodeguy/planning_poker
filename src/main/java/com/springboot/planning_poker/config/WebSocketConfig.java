@@ -26,8 +26,8 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer  {
         registry.addEndpoint("/ws")
                 .setAllowedOriginPatterns("*").withSockJS()
                 .setWebSocketEnabled(true)
-                .setHeartbeatTime(25000)
-                .setDisconnectDelay(500)
+//                .setHeartbeatTime(25000)
+//                .setDisconnectDelay(500)
                 .setClientLibraryUrl("/webjars/sockjs-client/1.1.2/sockjs.js")
                 .setSessionCookieNeeded(false);
     }

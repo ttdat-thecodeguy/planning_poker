@@ -4,16 +4,15 @@ import com.springboot.planning_poker.model.business.ITable;
 import com.springboot.planning_poker.model.enity.GameTable;
 import com.springboot.planning_poker.model.enity.User;
 import com.springboot.planning_poker.model.payload.request.TableUpdate;
+import com.springboot.planning_poker.model.responsitory.GameJoinsRepo;
 import com.springboot.planning_poker.model.responsitory.TableRepo;
 import com.springboot.planning_poker.model.responsitory.UserRepo;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.Tuple;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 
 @Service
@@ -22,12 +21,13 @@ import java.util.stream.Collectors;
 public class GameTableService implements ITable {
     private final TableRepo tableRepo;
     private final UserRepo userRepo;
+    private final GameJoinsRepo gameJoinsRepo;
     @Override
     public GameTable addTable(GameTable table, Long userId) {
         if(userId != null){
             //add owner to joined
             table.setUserOwerId(userId);
-            table.getJoins().add(new User(userId));
+
         }
         table.setName(table.getName() == "" ? "Planning Poker Game" : table.getName());
         return tableRepo.save(table);
@@ -50,17 +50,19 @@ public class GameTableService implements ITable {
         return tableRepo.findById(id).orElse(null);
     }
 
-    @Override
-    public List<Long> getUserJoinTable(String id) {
-        GameTable gameTable = tableRepo.getById(id);
-        return gameTable.getListUserId();
-    }
 
-    @Override @Transactional
-    public List<Long> removeUserFromTableAndGetList(String id, Long userId) {
-        GameTable gameTable = tableRepo.getById(id);
-        User user = userRepo.getById(userId);
-        return gameTable.removeUsersJoin(user).getListUserId();
-    }
+
+//    @Override
+//    public List<Tuple> getDetailsOfTable(String id) {
+//        return gameJoinsRepo.findAllById_TableId(id);
+//
+//    }
+
+//    @Override @Transactional
+//    public List<UserSocketRequest> removeUserFromTableAndGetList(String id, Long userId) {
+//        GameTable gameTable = tableRepo.getById(id);
+//        User user = userRepo.getById(userId);
+//        return gameTable.removeUsersJoin(user).getListUserSocketRequest();
+//    }
 
 }

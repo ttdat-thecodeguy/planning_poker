@@ -6,6 +6,7 @@ import com.springboot.planning_poker.model.business.IUser;
 import com.springboot.planning_poker.model.enity.GameTable;
 import com.springboot.planning_poker.model.enity.Role;
 import com.springboot.planning_poker.model.enity.User;
+import com.springboot.planning_poker.model.responsitory.GameJoinsRepo;
 import com.springboot.planning_poker.model.responsitory.TableRepo;
 import com.springboot.planning_poker.model.responsitory.UserRepo;
 import lombok.extern.slf4j.Slf4j;
@@ -28,14 +29,18 @@ public class PlanningPokerApplication implements CommandLineRunner {
      @Autowired private ITable tableBus;
      @Autowired private PasswordEncoder passwordEncoder;
      @Autowired private TableRepo tableRepo;
+
+
+     @Autowired private GameJoinsRepo gameJoinsRepo;
+
     public static void main(String[] args) {
         SpringApplication.run(PlanningPokerApplication.class, args);
     }
 
     @Override
     public void run(String... args) throws Exception {
-        User u1 = userBus.addUser(new User(null, "123@gmail.com",passwordEncoder.encode("1234"),"nam","user_default.jpg",false, new HashSet<>(), new HashSet<>(), new HashSet<>()));
-        User u2 = userBus.addUser(new User(null, "234@gmail.com",passwordEncoder.encode("1234"),"Hai","user_default.jpg",false, new HashSet<>(), new HashSet<>(), new HashSet<>()));
+        User u1 = userBus.addUser(new User(null, "123@gmail.com",passwordEncoder.encode("1234"),"nam","user_default.jpg",false, new HashSet<>(), new HashSet<>()));
+        User u2 = userBus.addUser(new User(null, "234@gmail.com",passwordEncoder.encode("1234"),"Hai","user_default.jpg",false, new HashSet<>(), new HashSet<>()));
         //roles
         roleBus.addRole(new Role(1, "ROLE_USER"));
         roleBus.addRole(new Role(2, "ROLE_ADMIN"));
@@ -43,10 +48,11 @@ public class PlanningPokerApplication implements CommandLineRunner {
         userBus.addRoleToUser(u1.getId(), 1);
         userBus.addRoleToUser(u2.getId(), 2);
 
-        GameTable table = tableBus.addTable(new GameTable("1234", "aaa", "1,2,4,8,10",u1,Long.valueOf(1) ,new HashSet<>(), new HashSet<>()), Long.valueOf(1));
+        GameTable table = tableBus.addTable(new GameTable(null, "aaa", "1,2,4,8,10",u1,Long.valueOf(1), null ,new HashSet<>(), new HashSet<>()), Long.valueOf(1));
 
         table.getJoins().add(new User(Long.valueOf(1)));
         tableRepo.save(table);
-        table.removeUsersJoin(new User(Long.valueOf(1)));
+
+
     }
 }

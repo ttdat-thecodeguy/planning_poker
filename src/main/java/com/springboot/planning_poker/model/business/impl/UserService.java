@@ -19,17 +19,11 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import javax.transaction.Transactional;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Component @Slf4j
 public class UserService implements IUser {
@@ -112,13 +106,19 @@ public class UserService implements IUser {
         //check is spectator
         isSpectator = isSpectator != null && isSpectator;
         // set attr to user
+
         user.getRoles().add(new Role(RoleEnum.ROLE_USER));
         user.setPassword(encoder.encode(String.valueOf(Math.random())));
         user.setEmail(RandomStringUtils.random(5, true, false) + "@gmail.com");
         user.setSpector(isSpectator);
+
         User userSave = userRepo.save(user);
-        table.getJoins().add(userSave);
+
         //generate token from random email and id
+        table.setUserOwerId(userSave.getId());
+        // update table owner
+        tableRepo.save(table);
+
         String token = jwtUtils.generateToken(user.getEmail(), user.getId());
         return new UserResponse(user.getId(), token, user.getEmail(), true, userSave.getDisplayName(), isSpectator);
     }

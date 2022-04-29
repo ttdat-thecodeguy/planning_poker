@@ -1,6 +1,5 @@
 package com.springboot.planning_poker.model.filter;
 
-import com.springboot.planning_poker.model.business.IUser;
 import com.springboot.planning_poker.model.utils.JwtUtils;
 import io.jsonwebtoken.ExpiredJwtException;
 import lombok.extern.slf4j.Slf4j;

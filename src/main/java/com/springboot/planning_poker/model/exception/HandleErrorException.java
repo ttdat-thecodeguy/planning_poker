@@ -15,25 +15,28 @@ import java.util.Map;
 
 @ControllerAdvice
 public class HandleErrorException {
-//	@ExceptionHandler(Exception.class)
-//	public ResponseEntity<Object> handle(Exception ex, HttpServletRequest request, HttpServletResponse response) {
-//		if (ex instanceof NullPointerException) {
-//			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-//		} else {
-//			return ResponseEntity.ok((new HashMap<String, Object>() {
-//				/**
-//					 *
-//					 */
-//				private static final long serialVersionUID = 1L;
-//				{
-//					put("error", ex.getMessage());
-//				}
-//			}));
-//		}
-//	}
-//
-//	@ResponseStatus(code = HttpStatus.BAD_REQUEST)
-//	@ExceptionHandler(MethodArgumentNotValidException.class)
+	@ExceptionHandler(Exception.class)
+	public ResponseEntity<Object> handle(Exception ex, HttpServletRequest request, HttpServletResponse response) {
+		if (ex instanceof NullPointerException) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		} else {
+			return ResponseEntity.ok((new HashMap<String, Object>() {
+				/**
+					 *
+					 */
+				private static final long serialVersionUID = 1L;
+				{
+					put("error", ex.getMessage());
+				}
+			}));
+		}
+	}
+
+
+
+
+//    @ResponseStatus(HttpStatus.NOT_FOUND)
+//	@ExceptionHandler(value =  NotFoundException.class )
 //	public Map<String, String> handleValidationExceptions(MethodArgumentNotValidException ex) {
 //		Map<String, String> errors = new HashMap<>();
 //		ex.getBindingResult().getAllErrors().forEach((error) -> {
