@@ -17,10 +17,6 @@ import org.springframework.stereotype.Controller;
 import javax.persistence.Tuple;
 import java.util.List;
 
-//@AllArgsConstructor @NoArgsConstructor
-//class Deck{
-    //int point;
-//}
 
 @Controller @Slf4j
 public class PlayGameController {
@@ -29,6 +25,8 @@ public class PlayGameController {
     @MessageMapping("/add-user")
     @SendTo("/topic/public")
     public Message addUser(@Payload Message message, SimpMessageHeaderAccessor headerAccessor){
+    	log.info("send message : add user id {}", message.getSender());
+    	
         headerAccessor.getSessionAttributes().put("id", message.getSender());
         headerAccessor.getSessionAttributes().put("table", message.getTable());
         tableBus.addUserToTable(new TableUpdate(message.getTable(), message.getSender()));
@@ -51,6 +49,8 @@ public class PlayGameController {
     @MessageMapping("/selected-card")
     @SendTo("/topic/public")
     public Message selectedCard(@Payload Message message) {
+    	log.info("message");
+
         gameJoinsBus.updateGameWhenSelected(message.getTable(),
                                             message.getSender(),
                                             message.getContent().split("-")[2]);
@@ -103,25 +103,4 @@ public class PlayGameController {
         /// will be code something if it is necessary
         return message;
     }
-
-//    @MessageMapping("/deactivate-spectator")
-//    @SendTo("/topic/public")
-//    public Message deactivateSpectator(@Payload Message message){
-//        gameJoinsBus.updateGameWhenSwitchSpectator(message.getTable(),
-//                message.getSender(),
-//                false);
-//        return message;
-//    }
-//
-//    @MessageMapping("/deactivate-spectator")
-//    @SendTo("/topic/public")
-//    public Message deactivateSpectator(@Payload Message message){
-//        gameJoinsBus.updateGameWhenSwitchSpectator(message.getTable(),
-//                message.getSender(),
-//                false);
-//        return message;
-//    }
-//    @MessageMapping("/deactivate-spectator")
-//    @SendTo("/topic/public")
-//    public Message
 }

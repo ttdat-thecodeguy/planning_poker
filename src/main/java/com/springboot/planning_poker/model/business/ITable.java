@@ -13,7 +13,7 @@ public interface ITable {
     void addGuestToTableAsCreated(TableUpdate tableUpdate);
     void addUserToTable(TableUpdate tableUpdate);
     GameTable getTableById(String id);
-
+    GameTable updateTableOwner(Long userId, String tableId) throws Exception;
     // List<UserSocketRequest> removeUserFromTableAndGetList(String id, Long userId);
 
 

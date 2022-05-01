@@ -5,7 +5,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data @AllArgsConstructor @NoArgsConstructor
-public class TableUpdate {
-    private String tableId;
-    private Long userId;
+public class RefreshTokenRequest {
+	private String refreshedToken;
 }

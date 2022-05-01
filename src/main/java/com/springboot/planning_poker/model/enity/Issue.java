@@ -13,7 +13,7 @@ import org.hibernate.annotations.GenericGenerator;
 public class Issue {
 
     @Id @GeneratedValue(generator = "generator_id")
-    @GenericGenerator(name="generator_id", strategy = "com.springboot.planning_poker.model.enity.GeneratorIssueId" )
+    @GenericGenerator(name="generator_id", strategy = "com.springboot.planning_poker.model.enity.generated_id.GeneratorIssueId" )
     private String id;
     private String name;
     private String link;

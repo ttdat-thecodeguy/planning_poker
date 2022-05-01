@@ -27,7 +27,6 @@ public class GameTableService implements ITable {
         if(userId != null){
             //add owner to joined
             table.setUserOwerId(userId);
-
         }
         table.setName(table.getName() == "" ? "Planning Poker Game" : table.getName());
         return tableRepo.save(table);
@@ -49,6 +48,14 @@ public class GameTableService implements ITable {
     public GameTable getTableById(String id) {
         return tableRepo.findById(id).orElse(null);
     }
+
+	@Override
+	public GameTable updateTableOwner(Long userId, String tableId) throws Exception {
+		GameTable table = tableRepo.findById(tableId).orElse(null);
+		if(table == null) throw new Exception("Table not found in db");
+		table.setUserOwerId(userId);
+		return tableRepo.save(table);
+	}
 
 
 

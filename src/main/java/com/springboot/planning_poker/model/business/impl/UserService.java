@@ -35,6 +35,9 @@ public class UserService implements IUser {
      @Autowired private JwtUtils jwtUtils;
      @Autowired private PasswordEncoder encoder;
      @Autowired private AuthenticationManager authenticationManager;
+     
+     @Autowired private RefreshTokenService refreshTokenService;
+     
     @Override
     public List<User> getUsers() {
         return userRepo.findAll();
@@ -85,7 +88,11 @@ public class UserService implements IUser {
         log.info(userLogin.getEmail());
         User user = userRepo.findUserByEmail(userLogin.getEmail());
         String token = jwtUtils.generateToken(user.getEmail(), user.getId());
-        return new UserResponse(user.getId(),token, user.getEmail(), false, user.getDisplayName(), false);
+        
+        String refreshToken = refreshTokenService.createRefreshToken(user.getId()).getToken();
+        
+        return new UserResponse(user.getId(),
+        						token, user.getEmail(), false, user.getDisplayName(), refreshToken ,false);
     }
 
     @Override @Transactional
@@ -97,30 +104,25 @@ public class UserService implements IUser {
         user.setPassword(encoder.encode(user.getPassword()));
         User userSave = userRepo.save(user);
         String token = jwtUtils.generateToken(userSave.getEmail(), user.getId());
-        return new UserResponse(user.getId() ,token, user.getEmail(), false, userSave.getDisplayName(), false);
+        String refreshToken = refreshTokenService.createRefreshToken(user.getId()).getToken();
+
+        return new UserResponse(user.getId() ,token, user.getEmail(), false, userSave.getDisplayName(), refreshToken ,false);
     }
 
     @Override @Transactional
     public UserResponse signupAsGuest(User user, Boolean isSpectator, String tableid) {
-        GameTable table = tableRepo.getById(tableid);
         //check is spectator
         isSpectator = isSpectator != null && isSpectator;
         // set attr to user
-
         user.getRoles().add(new Role(RoleEnum.ROLE_USER));
         user.setPassword(encoder.encode(String.valueOf(Math.random())));
         user.setEmail(RandomStringUtils.random(5, true, false) + "@gmail.com");
         user.setSpector(isSpectator);
 
         User userSave = userRepo.save(user);
-
-        //generate token from random email and id
-        table.setUserOwerId(userSave.getId());
-        // update table owner
-        tableRepo.save(table);
-
         String token = jwtUtils.generateToken(user.getEmail(), user.getId());
-        return new UserResponse(user.getId(), token, user.getEmail(), true, userSave.getDisplayName(), isSpectator);
+        /// user signin as guest cant be set refresh token because it not really a user
+        return new UserResponse(user.getId(), token, user.getEmail(), true, userSave.getDisplayName(), null ,isSpectator);
     }
 
     @Override @Transactional

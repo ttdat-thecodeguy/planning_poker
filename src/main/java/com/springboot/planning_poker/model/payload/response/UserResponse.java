@@ -11,5 +11,6 @@ public class UserResponse {
     private String email;
     private boolean isGuest;
     private String displayName;
+    private String refreshToken;
     private boolean isSpectorMode;
 }

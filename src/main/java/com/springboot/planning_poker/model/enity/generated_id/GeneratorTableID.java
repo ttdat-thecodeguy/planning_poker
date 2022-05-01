@@ -1,4 +1,4 @@
-package com.springboot.planning_poker.model.enity;
+package com.springboot.planning_poker.model.enity.generated_id;
 
 import org.hibernate.HibernateException;
 import org.hibernate.engine.spi.SharedSessionContractImplementor;

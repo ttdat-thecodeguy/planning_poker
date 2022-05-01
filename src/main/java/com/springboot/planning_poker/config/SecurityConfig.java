@@ -2,6 +2,10 @@ package com.springboot.planning_poker.config;
 
 import com.springboot.planning_poker.model.exception.AuthHandleException;
 import com.springboot.planning_poker.model.filter.JwtFilter;
+
+import java.time.Duration;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -31,7 +35,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.cors();
         http.authorizeRequests().antMatchers("/api/user/**").access("hasRole('USER') or hasRole('ADMIN') ").anyRequest().permitAll();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-        http.exceptionHandling().authenticationEntryPoint(entryPoint);
+       http.exceptionHandling().authenticationEntryPoint(entryPoint);
+        
         http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
     }
 
@@ -40,11 +45,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
     }
+    
 
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", new CorsConfiguration().applyPermitDefaultValues());
+        CorsConfiguration config = new CorsConfiguration().applyPermitDefaultValues();
+        config.setAllowedOrigins(List.of("http://localhost:4200/"));
+        config.setAllowCredentials(true);
+        config.setAllowedMethods(List.of("GET", "POST", "PATCH", "PUT", "DELETE"));
+        config.setMaxAge(Duration.ofHours(1));
+        source.registerCorsConfiguration("/**", config);
         return source;
     }
 }

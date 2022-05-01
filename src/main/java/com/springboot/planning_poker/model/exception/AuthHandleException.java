@@ -1,8 +1,16 @@
 package com.springboot.planning_poker.model.exception;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.http.MediaType;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.springboot.planning_poker.model.payload.response.error_message.ErrorMessage;
+import com.springboot.planning_poker.model.payload.response.error_message.UsernameNotFoundMessage;
+
+import io.jsonwebtoken.JwtException;
+
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
 
@@ -10,25 +18,32 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Collections;
 
-@Component
+@Component 
 public class AuthHandleException implements AuthenticationEntryPoint {
     @Override
-    public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
-        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-
-        String message;
-
-        if (authException.getCause() != null) {
-            message = authException.getCause().toString() + " " + authException.getMessage();
-        } else {
-            message = authException.getMessage();
-        }
-
-        byte[] body = new ObjectMapper().writeValueAsBytes(Collections.singletonMap("error", message));
-
-        response.getOutputStream().write(body);
+    public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException, JwtException {
+        
+    	
+    	ErrorMessage message = null;
+    	
+    	if(authException instanceof UsernameNotFoundException) {
+    		response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
+    		message = new UsernameNotFoundMessage(HttpStatus.INTERNAL_SERVER_ERROR, authException.getMessage(), true);
+    	}
+    	
+    	Gson gson = new GsonBuilder().create();
+    	String json = gson.toJson(message);
+    	
+    	response.setContentType("application/json");
+   	 	response.getWriter().write(json);
+   	 	return;
+    	
+//    	if(authException instanceof ExpiredJwtException) {
+//    		
+//    	}
+    	
+    	
+    	
     }
 }

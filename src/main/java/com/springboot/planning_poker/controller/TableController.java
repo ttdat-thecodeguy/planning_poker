@@ -2,6 +2,7 @@ package com.springboot.planning_poker.controller;
 
 import com.springboot.planning_poker.model.business.ITable;
 import com.springboot.planning_poker.model.enity.GameTable;
+import com.springboot.planning_poker.model.payload.request.TableUpdate;
 import com.springboot.planning_poker.model.payload.response.UserResponse;
 import com.springboot.planning_poker.model.utils.JwtUtils;
 import lombok.RequiredArgsConstructor;
@@ -27,12 +28,17 @@ public class TableController {
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<?> getTableById(@PathVariable("id") String id ){
+    public ResponseEntity<?> getTableById(@PathVariable("id") String id ) throws Exception{
        GameTable table = tableBus.getTableById(id);
-       if(table == null) return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not Found");
+       if(table == null) throw new Exception("Not found");
        else return ResponseEntity.ok(table);
     }
-
+    /// patch method not working --> need asks
+    @PatchMapping(value = "/update-owner")
+    public ResponseEntity<?> updateTableOwner(@RequestBody TableUpdate table) throws Exception{
+		return ResponseEntity.ok(tableBus.updateTableOwner(table.getUserId(), table.getTableId()));
+    }
+    
 //    @PostMapping(value = "/update-user")
 //    public ResponseEntity<?> updateUser(@RequestBody TableUpdate tableUpdate) {
 //        tableBus.addUserToTable(tableUpdate);

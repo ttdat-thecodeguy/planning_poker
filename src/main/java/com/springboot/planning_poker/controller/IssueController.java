@@ -41,7 +41,7 @@ public class IssueController {
         return ResponseEntity.ok(lst);
     }
 
-    @DeleteMapping(value = "/delete")
+    @DeleteMapping(value = "/delete-all")
     public ResponseEntity<?> deleteAllIssue(@RequestParam() String tableId){
         issueBus.deleteAllIssue(tableId);
         return ResponseEntity.accepted().build();
