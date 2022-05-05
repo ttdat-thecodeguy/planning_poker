@@ -5,7 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data @AllArgsConstructor @NoArgsConstructor
-public class TableUpdate {
+public class TableUpdateUser {
     private String tableId;
     private Long userId;
 }

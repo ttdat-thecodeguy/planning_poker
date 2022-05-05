@@ -7,11 +7,11 @@ import lombok.NoArgsConstructor;
 @Data @AllArgsConstructor @NoArgsConstructor
 public class Message {
 
-    private Long sender;
-    private String table;
-    private String content;
-    private MessageType messageType;
-
+    protected Long sender;
+    protected String table;
+    protected String content;
+    protected MessageType messageType;
+    protected String issue;
     public enum MessageType {
         JOIN,
 

@@ -60,6 +60,14 @@ public class IssueService implements ITableIssue{
 	}
 
 	@Override
+	public void updateResultToIssue( String id, String storyPoint) {
+		// TODO - update result to issue
+		Issue issue = issueRepo.findById(id).orElse(null);
+		issue.setStoryPoint(storyPoint);
+		issueRepo.save(issue);
+	}
+
+	@Override
 	public List<Issue> importIssueFromCSVAndGetListIssue(MultipartFile file, String tableId, boolean isIncludeHeader) throws CsvValidationException, IOException {
 		File f = Utils.transferToFile(file);
 		CSVReader reader;

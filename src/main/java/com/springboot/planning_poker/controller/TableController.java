@@ -2,7 +2,8 @@ package com.springboot.planning_poker.controller;
 
 import com.springboot.planning_poker.model.business.ITable;
 import com.springboot.planning_poker.model.enity.GameTable;
-import com.springboot.planning_poker.model.payload.request.TableUpdate;
+import com.springboot.planning_poker.model.payload.request.TableUpdateUser;
+import com.springboot.planning_poker.model.payload.request.TableUpdateIssue;
 import com.springboot.planning_poker.model.payload.response.UserResponse;
 import com.springboot.planning_poker.model.utils.JwtUtils;
 import lombok.RequiredArgsConstructor;
@@ -10,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
 
@@ -29,16 +31,23 @@ public class TableController {
 
     @GetMapping(value = "/{id}")
     public ResponseEntity<?> getTableById(@PathVariable("id") String id ) throws Exception{
-       GameTable table = tableBus.getTableById(id);
-       if(table == null) throw new Exception("Not found");
-       else return ResponseEntity.ok(table);
+       GameTable table = tableBus.findTableById(id);
+        if(table == null) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Table Not in DB");
+        else return ResponseEntity.ok(table);
     }
     /// patch method not working --> need asks
     @PatchMapping(value = "/update-owner")
-    public ResponseEntity<?> updateTableOwner(@RequestBody TableUpdate table) throws Exception{
-		return ResponseEntity.ok(tableBus.updateTableOwner(table.getUserId(), table.getTableId()));
+    public ResponseEntity<?> updateTableOwner(@RequestBody TableUpdateUser table) throws Exception{
+		return ResponseEntity.ok(tableBus.findTableAndUpdateTableOwner(table.getUserId(), table.getTableId()));
     }
-    
+
+    @PatchMapping(value = "/update-issue")
+    public ResponseEntity<?> addIssueInTable(@RequestBody TableUpdateIssue tableUpdateIssue){
+        return ResponseEntity.ok(tableBus.findTableAndUpdateTableIssue(tableUpdateIssue.getTableId(), tableUpdateIssue.getIssueId(), tableUpdateIssue.isAdd()));
+    }
+
+
+
 //    @PostMapping(value = "/update-user")
 //    public ResponseEntity<?> updateUser(@RequestBody TableUpdate tableUpdate) {
 //        tableBus.addUserToTable(tableUpdate);

@@ -7,6 +7,7 @@ import java.util.List;
 
 public interface IGameJoins {
     public List<Tuple> getDetailsOfTable(String id);
+    public List<Tuple> getGameResult(String tableId);
     public void deleteById(String gameTableId, Long userId);
     public void updateGameWhenSelected(String tableId, Long userId, String item);
     public void updateGameWhenUnSelected(String tableId, Long userId);

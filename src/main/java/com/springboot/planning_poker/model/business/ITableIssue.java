@@ -16,4 +16,5 @@ public interface ITableIssue {
     public List<Issue> importIssueFromCSVAndGetListIssue(MultipartFile file, String tableId, boolean isIncludeHeader) throws CsvValidationException, IOException;
     public void importFromUrls(String[] urls);
     public void deleteAllIssue(String tableId);
+    public void updateResultToIssue(String id, String storyPoint);
 }

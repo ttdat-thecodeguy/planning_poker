@@ -4,8 +4,10 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.springboot.planning_poker.model.business.IGameJoins;
 import com.springboot.planning_poker.model.business.ITable;
-import com.springboot.planning_poker.model.payload.request.TableUpdate;
+import com.springboot.planning_poker.model.business.ITableIssue;
+import com.springboot.planning_poker.model.payload.request.TableUpdateUser;
 import com.springboot.planning_poker.model.payload.response.Message;
+import com.springboot.planning_poker.model.payload.response.SuccessMessage;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -16,6 +18,7 @@ import org.springframework.stereotype.Controller;
 
 import javax.persistence.Tuple;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 
 @Controller @Slf4j
@@ -85,9 +88,27 @@ public class PlayGameController {
 
     @MessageMapping("/show-card")
     @SendTo("/topic/public")
-    public Message showCard(@Payload Message message){
-        /// will be code something if it is necessary
-        return message;
+    public SuccessMessage showCard(@Payload Message message){
+        SuccessMessage result = new SuccessMessage(message);
+        List<Tuple> resultDetails = gameJoinsBus.getGameResult(message.getTable());
+        if (message.getIssue() != null){
+            /// set story point to issue
+            var count = resultDetails.get(0).get(0, Long.class);
+            /// đếm thẻ có nhiều lượt vote nhất //nếu các thẻ bằng nhau thì lấy thẻ đầu tiên
+            AtomicReference<String> item = new AtomicReference<>(resultDetails.get(0).get(1, String.class));
+            resultDetails.forEach(i -> {
+                if(i.get(0, Long.class) > count){
+                    item.set(i.get(1, String.class ));
+                }
+            });
+            result.setStoryPoint(item.get());
+            // update result to issue
+            issueBus.updateResultToIssue(message.getIssue(), item.get());
+        }
+        Gson gson = new GsonBuilder().create();
+        String json = gson.toJson(resultDetails);
+        result.setContent(json);
+        return result;
     }
 
     @MessageMapping("/start-new-vote")
