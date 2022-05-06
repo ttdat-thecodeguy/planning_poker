@@ -14,7 +14,7 @@ public interface ITableIssue {
     public Issue addIssue(Issue issue, String tableId) throws ResponseStatusException;
     public void importFromJira();
     public List<Issue> importIssueFromCSVAndGetListIssue(MultipartFile file, String tableId, boolean isIncludeHeader) throws CsvValidationException, IOException;
-    public void importFromUrls(String[] urls);
+    public List<Issue> importFromUrls(List<String> urls, String tableId);
     public void deleteAllIssue(String tableId);
     public void updateResultToIssue(String id, String storyPoint);
 }

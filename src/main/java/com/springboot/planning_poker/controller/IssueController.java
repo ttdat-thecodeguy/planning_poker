@@ -41,6 +41,11 @@ public class IssueController {
         return ResponseEntity.ok(lst);
     }
 
+    @PostMapping(value = "/import-as-urls")
+    public ResponseEntity<?> uploadAsUrls(@RequestBody List<String> issues, @RequestParam() String tableId){
+        return ResponseEntity.ok(issueBus.importFromUrls(issues, tableId));
+    }
+
     @DeleteMapping(value = "/delete-all")
     public ResponseEntity<?> deleteAllIssue(@RequestParam() String tableId){
         issueBus.deleteAllIssue(tableId);

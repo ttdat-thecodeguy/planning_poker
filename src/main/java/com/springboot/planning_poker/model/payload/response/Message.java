@@ -14,9 +14,7 @@ public class Message {
     protected String issue;
     public enum MessageType {
         JOIN,
-
         /* ---GAME--- */
-
         /// SELECTED CARD
         SELECTED,
         UNSELECTED_CARD,
@@ -27,10 +25,12 @@ public class Message {
         SHOW_CARD,
         /// RESTART GAME
         START_NEW_VOTE,
-        START_NEW_VOTE_WITH_ISSUE,
-
         /* ---ISSUE---- */
         ADD_ISSUE,
+        SELECTED_ISSUE,
+        UNSELECTED_ISSUE,
+        IMPORT_FROM_URLS,
+        IMPORT_FROM_CSV,
         DELETE_ALL_ISSUE,
         LEAVE
     }
