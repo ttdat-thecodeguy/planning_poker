@@ -1,6 +1,5 @@
 package com.springboot.planning_poker.model.responsitory;
 
-import com.springboot.planning_poker.model.dto.DeckCount;
 import com.springboot.planning_poker.model.enity.GameJoinId;
 import com.springboot.planning_poker.model.enity.GameJoins;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -14,11 +13,14 @@ import java.util.Optional;
 
 @Repository
 public interface GameJoinsRepo extends JpaRepository<GameJoins, GameJoinId> {
+
+
     Optional<GameJoins> findById(GameJoinId id);
 
-    @Query("SELECT g, u.displayName, t.issueActive.id, t.issueActive.name FROM GameJoins g JOIN User u ON g.id.userId = u.id JOIN GameTable t ON g.id.tableId = t.id left join t.issueActive WHERE g.id.tableId = :tableId")
-    List<Tuple> findDetailsOfTableById_TableId(@Param("tableId") String tableId);
 
-    @Query("SELECT  g.item as item, COUNT(g.item) as count FROM GameJoins g WHERE g.id.tableId = :tableId GROUP BY g.item")
-    List<DeckCount> countDeckInTable(@Param("tableId") String tableId);
+    @Query("SELECT g, u.displayName FROM GameJoins g JOIN User u ON g.id.userId = u.id WHERE g.id.tableId = :tableId")
+    List<Tuple> findAllAndDisplayNameById_TableId(@Param("tableId") String tableId);
+
+    @Query("SELECT COUNT(g.item) as count, g.item as item FROM GameJoins g WHERE g.id.tableId = :tableId GROUP BY g.item")
+    List<Tuple> countDeckInTable(@Param("tableId") String tableId);
 }

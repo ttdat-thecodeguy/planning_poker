@@ -8,8 +8,10 @@ import com.springboot.planning_poker.model.payload.response.UserResponse;
 import com.springboot.planning_poker.model.utils.JwtUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
 
@@ -29,12 +31,14 @@ public class TableController {
 
     @GetMapping(value = "/{id}")
     public ResponseEntity<?> getTableById(@PathVariable("id") String id ) throws Exception{
-        return ResponseEntity.ok(tableBus.findTableById(id));
+       GameTable table = tableBus.findTableById(id);
+        if(table == null) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Table Not in DB");
+        else return ResponseEntity.ok(table);
     }
     /// patch method not working --> need asks
     @PatchMapping(value = "/update-owner")
     public ResponseEntity<?> updateTableOwner(@RequestBody TableUpdateUser table) throws Exception{
-		return ResponseEntity.ok(tableBus.updateTableOwner(table.getUserId(), table.getTableId()));
+		return ResponseEntity.ok(tableBus.findTableAndUpdateTableOwner(table.getUserId(), table.getTableId()));
     }
 
     @PatchMapping(value = "/update-issue")

@@ -48,6 +48,11 @@ public class PlanningPokerApplication implements CommandLineRunner {
         userBus.addRoleToUser(u1.getId(), 1);
         userBus.addRoleToUser(u2.getId(), 2);
 
+        GameTable table = tableBus.addTable(new GameTable(null, "aaa", "1,2,4,8,10",u1,Long.valueOf(1), null ,new HashSet<>(), new HashSet<>()), Long.valueOf(1));
+
+        table.getJoins().add(new User(Long.valueOf(1)));
+        tableRepo.save(table);
+
 
     }
 }

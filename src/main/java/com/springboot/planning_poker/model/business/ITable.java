@@ -1,14 +1,22 @@
 package com.springboot.planning_poker.model.business;
 
+import com.springboot.planning_poker.model.enity.GameJoins;
 import com.springboot.planning_poker.model.enity.GameTable;
-import com.springboot.planning_poker.model.enity.Issue;
-import com.springboot.planning_poker.model.payload.request.TableUpdateUser;
+import com.springboot.planning_poker.model.payload.request.TableUpdate;
+
+import javax.persistence.Tuple;
+import java.util.List;
 
 
 public interface ITable {
     GameTable addTable(GameTable table, Long id );
-    void updateJoinUserToTable(TableUpdateUser tableUpdate);
-    GameTable findTableById(String id);
+    void addGuestToTableAsCreated(TableUpdate tableUpdate);
+    void addUserToTable(TableUpdate tableUpdate);
+    GameTable getTableById(String id);
     GameTable updateTableOwner(Long userId, String tableId) throws Exception;
-    Issue findTableAndUpdateTableIssue(String issueId, String tableId, boolean isAdd);
+    // List<UserSocketRequest> removeUserFromTableAndGetList(String id, Long userId);
+
+
+
+
 }

@@ -1,7 +1,6 @@
 package com.springboot.planning_poker.model.business.impl;
 
 import com.springboot.planning_poker.model.business.IGameJoins;
-import com.springboot.planning_poker.model.dto.DeckCount;
 import com.springboot.planning_poker.model.enity.GameJoinId;
 import com.springboot.planning_poker.model.enity.GameJoins;
 import com.springboot.planning_poker.model.responsitory.GameJoinsRepo;
@@ -18,18 +17,8 @@ public class GameJoinService implements IGameJoins {
 
     @Override
     public List<Tuple> getDetailsOfTable(String id) {
-        return gameJoinsRepo.findDetailsOfTableById_TableId(id);
-    }
-
-    @Override
-    public DeckCount calculateGameResult(List<DeckCount> lstDeckCount) {
-        /// TODO Not check
-        var result = lstDeckCount.stream().filter(item -> item.getCount() > lstDeckCount.get(0).getCount()).findFirst().orElse(lstDeckCount.get(0));
-        return result;
-    }
-
-    @Override
-    public List<DeckCount> getGameResult(String tableId) {
+        return gameJoinsRepo.findAllById_TableId(id);
+    public List<Tuple> getGameResult(String tableId) {
         return gameJoinsRepo.countDeckInTable(tableId);
     }
 
