@@ -3,7 +3,6 @@ package com.springboot.planning_poker.model.business.impl;
 import java.io.*;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import com.springboot.planning_poker.model.enity.GameTable;
 import com.springboot.planning_poker.model.responsitory.TableRepo;
@@ -29,11 +28,12 @@ public class IssueService implements ITableIssue{
 
 	@Override
 	public List<Issue> findIssueByGameTableId(String tableId) {
-		return issueRepo.findByGameTable_Id(tableId);
+		return issueRepo.findByTableId(tableId);
 	}
 
 	@Override
 	public Issue addIssue(Issue issue, String tableId) throws ResponseStatusException {
+		// TODO Auto-generated method stub
 		GameTable table = tableRepo.findById(tableId).orElse(null);
 		if(table == null) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Table Not in DB");
 		issue.setGameTable(table);
@@ -42,18 +42,14 @@ public class IssueService implements ITableIssue{
 
 	@Override
 	public void importFromJira() {
-
+		// TODO Auto-generated method stub
+		
 	}
 
 
 	@Override
-	public List<Issue> importFromUrls(List<String> urls, String tableId) {
-		GameTable table = tableRepo.findById(tableId).orElse(null);
-		if(table == null) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Table Not in DB");
-		return urls
-				.stream()
-				.map(url -> issueRepo.save(new Issue(null, url, url, null, table, null)))
-				.collect(Collectors.toList());
+	public void importFromUrls(String[] urls) {
+		// TODO Auto-generated method stub
 	}
 
 	@Override
@@ -65,6 +61,7 @@ public class IssueService implements ITableIssue{
 
 	@Override
 	public void updateResultToIssue( String id, String storyPoint) {
+		// TODO - update result to issue
 		Issue issue = issueRepo.findById(id).orElse(null);
 		issue.setStoryPoint(storyPoint);
 		issueRepo.save(issue);
