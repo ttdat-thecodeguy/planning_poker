@@ -2,8 +2,9 @@ package com.springboot.planning_poker.model.business.impl;
 
 import com.springboot.planning_poker.model.business.ITable;
 import com.springboot.planning_poker.model.enity.GameTable;
+import com.springboot.planning_poker.model.enity.Issue;
 import com.springboot.planning_poker.model.enity.User;
-import com.springboot.planning_poker.model.payload.request.TableUpdate;
+import com.springboot.planning_poker.model.payload.request.TableUpdateUser;
 import com.springboot.planning_poker.model.responsitory.GameJoinsRepo;
 import com.springboot.planning_poker.model.responsitory.IssueRepo;
 import com.springboot.planning_poker.model.responsitory.TableRepo;
