@@ -3,6 +3,8 @@ package com.springboot.planning_poker.model.enity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.GenericGenerator;
 
 
@@ -26,13 +28,18 @@ public class GameTable {
     private String voting;
 
     @OneToOne(fetch = FetchType.EAGER, targetEntity = User.class)
-    @JoinColumn(name = "user_id", insertable = false, updatable = false)
+    @JoinColumn(name = "user_id")
     private User userOwner;
 
-    @Column(name = "user_id")
-    private Long userOwerId;
-
     private Boolean isShowCardByOwner;
+
+
+    @OneToOne(targetEntity = Issue.class, fetch = FetchType.EAGER)
+    @JoinColumn(name = "issue_id")
+    private Issue issueActive;
+
+//    @Column(name = "issue_id")
+//    private String issueActiveId;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "gameTable")
     @JsonIgnore

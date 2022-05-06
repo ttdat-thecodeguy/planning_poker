@@ -10,6 +10,5 @@ import java.util.List;
 
 @Repository
 public interface IssueRepo extends JpaRepository<Issue, String> {
-    @Query("SELECT issue from Issue issue where issue.gameTable.id = :tableId")
-    List<Issue> findByTableId(@Param("tableId") String tableId);
+    List<Issue> findByGameTable_Id(String tableId);
 }

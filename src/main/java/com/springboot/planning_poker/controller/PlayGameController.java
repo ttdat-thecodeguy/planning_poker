@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder;
 import com.springboot.planning_poker.model.business.IGameJoins;
 import com.springboot.planning_poker.model.business.ITable;
 import com.springboot.planning_poker.model.business.ITableIssue;
+import com.springboot.planning_poker.model.dto.DeckCount;
 import com.springboot.planning_poker.model.payload.request.TableUpdateUser;
 import com.springboot.planning_poker.model.payload.response.Message;
 import com.springboot.planning_poker.model.payload.response.SuccessMessage;
@@ -25,6 +26,8 @@ import java.util.concurrent.atomic.AtomicReference;
 public class PlayGameController {
     @Autowired private IGameJoins gameJoinsBus;
     @Autowired private ITable tableBus;
+    @Autowired private ITableIssue issueBus;
+
     @MessageMapping("/add-user")
     @SendTo("/topic/public")
     public Message addUser(@Payload Message message, SimpMessageHeaderAccessor headerAccessor){
@@ -32,11 +35,11 @@ public class PlayGameController {
     	
         headerAccessor.getSessionAttributes().put("id", message.getSender());
         headerAccessor.getSessionAttributes().put("table", message.getTable());
-        tableBus.addUserToTable(new TableUpdate(message.getTable(), message.getSender()));
+        tableBus.updateJoinUserToTable(new TableUpdateUser(message.getTable(), message.getSender()));
 
-        List<Tuple> users = gameJoinsBus.getDetailsOfTable(message.getTable());
+        List<Tuple> tableDetails = gameJoinsBus.getDetailsOfTable(message.getTable());
         Gson gson = new GsonBuilder().create();
-        String json = gson.toJson(users);
+        String json = gson.toJson(tableDetails);
         message.setContent(json);
         return message;
     }
@@ -90,21 +93,13 @@ public class PlayGameController {
     @SendTo("/topic/public")
     public SuccessMessage showCard(@Payload Message message){
         SuccessMessage result = new SuccessMessage(message);
-        List<Tuple> resultDetails = gameJoinsBus.getGameResult(message.getTable());
+
+        List<DeckCount> resultDetails = gameJoinsBus.getGameResult(message.getTable());
         if (message.getIssue() != null){
-            /// set story point to issue
-            var count = resultDetails.get(0).get(0, Long.class);
-            /// đếm thẻ có nhiều lượt vote nhất //nếu các thẻ bằng nhau thì lấy thẻ đầu tiên
-            AtomicReference<String> item = new AtomicReference<>(resultDetails.get(0).get(1, String.class));
-            resultDetails.forEach(i -> {
-                if(i.get(0, Long.class) > count){
-                    item.set(i.get(1, String.class ));
-                }
-            });
-            result.setStoryPoint(item.get());
-            // update result to issue
-            issueBus.updateResultToIssue(message.getIssue(), item.get());
+            DeckCount deckCount = gameJoinsBus.calculateGameResult(resultDetails);
+            result.setStoryPoint(deckCount.getItem());
         }
+
         Gson gson = new GsonBuilder().create();
         String json = gson.toJson(resultDetails);
         result.setContent(json);
@@ -114,14 +109,49 @@ public class PlayGameController {
     @MessageMapping("/start-new-vote")
     @SendTo("/topic/public")
     public Message startNewVote(@Payload Message message){
-        /// will be code something if it is necessary
+        /// TODO clean all data in game joins table
+        /// TODO - viết tạm bên front
+        /// TODO - sửa cái spectator // xong
         return message;
     }
 
-    @MessageMapping("/start-new-vote-with-issue")
+    /***/
+
+    @MessageMapping("/add-issue")
     @SendTo("/topic/public")
-    public Message startNewVoteWithIssue(@Payload Message message){
-        /// will be code something if it is necessary
+    public Message addIssue(@Payload Message message){
+        return message;
+    }
+
+    @MessageMapping("/selected-issue")
+    @SendTo("/topic/public")
+    public Message selectedIssue(@Payload Message message){
+        return message;
+    }
+
+    @MessageMapping("/unselected-issue")
+    @SendTo("/topic/public")
+    public Message unselectedIssue(@Payload Message message){
+        return message;
+    }
+
+    /// import from urls
+    @MessageMapping("/import-from-urls")
+    @SendTo("/topic/public")
+    public Message importFromUrls(@Payload Message message){
+        return message;
+    }
+
+    /// import from csv
+    @MessageMapping("/import-from-csv")
+    @SendTo("/topic/public")
+    public Message importFromCSV(@Payload Message message){
+        return message;
+    }
+
+    @MessageMapping("/delete-issue")
+    @SendTo("/topic/public")
+    public Message deleteIssue(@Payload Message message){
         return message;
     }
 }
