@@ -18,6 +18,7 @@ public class GameJoinService implements IGameJoins {
 
     @Override
     public List<Tuple> getDetailsOfTable(String id) {
+<<<<<<< Updated upstream
         return gameJoinsRepo.findDetailsOfTableById_TableId(id);
     }
 
@@ -30,6 +31,11 @@ public class GameJoinService implements IGameJoins {
 
     @Override
     public List<DeckCount> getGameResult(String tableId) {
+=======
+        return gameJoinsRepo.findAllAndDisplayNameById_TableId(id);
+    }
+    public List<Tuple> getGameResult(String tableId) {
+>>>>>>> Stashed changes
         return gameJoinsRepo.countDeckInTable(tableId);
     }
 

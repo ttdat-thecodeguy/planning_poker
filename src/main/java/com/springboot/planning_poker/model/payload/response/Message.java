@@ -32,6 +32,10 @@ public class Message {
         IMPORT_FROM_URLS,
         IMPORT_FROM_CSV,
         DELETE_ALL_ISSUE,
+        SELECTED_ISSUE,
+        UNSELECTED_ISSUE,
+        IMPORT_FROM_URLS,
+        IMPORT_FROM_CSV,
         LEAVE
     }
 }

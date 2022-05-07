@@ -26,6 +26,10 @@ import java.util.concurrent.atomic.AtomicReference;
 public class PlayGameController {
     @Autowired private IGameJoins gameJoinsBus;
     @Autowired private ITable tableBus;
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
     @Autowired private ITableIssue issueBus;
 
     @MessageMapping("/add-user")
@@ -35,7 +39,11 @@ public class PlayGameController {
     	
         headerAccessor.getSessionAttributes().put("id", message.getSender());
         headerAccessor.getSessionAttributes().put("table", message.getTable());
+<<<<<<< Updated upstream
         tableBus.updateJoinUserToTable(new TableUpdateUser(message.getTable(), message.getSender()));
+=======
+        tableBus.addUserToTable(new TableUpdateUser(message.getTable(), message.getSender()));
+>>>>>>> Stashed changes
 
         List<Tuple> tableDetails = gameJoinsBus.getDetailsOfTable(message.getTable());
         Gson gson = new GsonBuilder().create();
@@ -115,8 +123,11 @@ public class PlayGameController {
         return message;
     }
 
+<<<<<<< Updated upstream
     /***/
 
+=======
+>>>>>>> Stashed changes
     @MessageMapping("/add-issue")
     @SendTo("/topic/public")
     public Message addIssue(@Payload Message message){

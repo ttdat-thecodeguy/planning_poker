@@ -48,6 +48,11 @@ public class PlanningPokerApplication implements CommandLineRunner {
         userBus.addRoleToUser(u1.getId(), 1);
         userBus.addRoleToUser(u2.getId(), 2);
 
+<<<<<<< Updated upstream
+=======
+
+
+>>>>>>> Stashed changes
 
     }
 }
