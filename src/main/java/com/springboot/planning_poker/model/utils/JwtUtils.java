@@ -18,7 +18,7 @@ public class JwtUtils {
     private static final long serialVersionUID = -2550185165626007488L;
     
 //    @Value("${app.expired_time}")
-    public long JWT_TOKEN_VALIDITY = 10;
+    public long JWT_TOKEN_VALIDITY = 16800;
 
     @Value("${app.secret_key}")
     private String SECRET;

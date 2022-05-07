@@ -31,11 +31,8 @@ public class TableController {
 
     @GetMapping(value = "/{id}")
     public ResponseEntity<?> getTableById(@PathVariable("id") String id ) throws Exception{
-       GameTable table = tableBus.findTableById(id);
-        if(table == null) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Table Not in DB");
-        else return ResponseEntity.ok(table);
+        return ResponseEntity.ok(tableBus.findTableById(id));
     }
-    /// patch method not working --> need asks
     @PatchMapping(value = "/update-owner")
     public ResponseEntity<?> updateTableOwner(@RequestBody TableUpdateUser table) throws Exception{
 		return ResponseEntity.ok(tableBus.updateTableOwner(table.getUserId(), table.getTableId()));
@@ -46,11 +43,4 @@ public class TableController {
         return ResponseEntity.ok(tableBus.updateTableIssue(tableUpdateIssue.getTableId(), tableUpdateIssue.getIssueId(), tableUpdateIssue.isAdd()));
     }
 
-
-
-//    @PostMapping(value = "/update-user")
-//    public ResponseEntity<?> updateUser(@RequestBody TableUpdate tableUpdate) {
-//        tableBus.addUserToTable(tableUpdate);
-//        return ResponseEntity.ok(tableUpdate);
-//    }
 }

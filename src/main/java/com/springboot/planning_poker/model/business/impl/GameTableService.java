@@ -43,7 +43,7 @@ public class GameTableService implements ITable {
 
     @Override
     public void updateJoinUserToTable(TableUpdateUser tableUpdate) {
-        GameTable gameTable = tableRepo.getById(tableUpdate.getTableId());
+        GameTable gameTable = this.findTableById(tableUpdate.getTableId());
         User user = userRepo.getById(tableUpdate.getUserId());
         gameTable.addUsersJoin(user);
     }
@@ -57,8 +57,7 @@ public class GameTableService implements ITable {
 
 	@Override
 	public GameTable updateTableOwner(Long userId, String tableId) throws Exception {
-		GameTable table = tableRepo.findById(tableId).orElse(null);
-		if(table == null) throw new Exception("Table not found in db");
+		GameTable table = this.findTableById(tableId);
 		table.setUserOwerId(userId);
 		return tableRepo.save(table);
 	}
