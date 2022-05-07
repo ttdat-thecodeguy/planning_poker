@@ -17,7 +17,9 @@ public class GameJoinService implements IGameJoins {
 
     @Override
     public List<Tuple> getDetailsOfTable(String id) {
-        return gameJoinsRepo.findAllById_TableId(id);
+        return gameJoinsRepo.findDetailsOfTableById_TableId(id);
+    }
+
     public List<Tuple> getGameResult(String tableId) {
         return gameJoinsRepo.countDeckInTable(tableId);
     }

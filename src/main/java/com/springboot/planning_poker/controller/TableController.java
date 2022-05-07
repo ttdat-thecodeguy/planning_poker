@@ -38,12 +38,12 @@ public class TableController {
     /// patch method not working --> need asks
     @PatchMapping(value = "/update-owner")
     public ResponseEntity<?> updateTableOwner(@RequestBody TableUpdateUser table) throws Exception{
-		return ResponseEntity.ok(tableBus.findTableAndUpdateTableOwner(table.getUserId(), table.getTableId()));
+		return ResponseEntity.ok(tableBus.updateTableOwner(table.getUserId(), table.getTableId()));
     }
 
     @PatchMapping(value = "/update-issue")
-    public ResponseEntity<?> addIssueInTable(@RequestBody TableUpdateIssue tableUpdateIssue){
-        return ResponseEntity.ok(tableBus.findTableAndUpdateTableIssue(tableUpdateIssue.getTableId(), tableUpdateIssue.getIssueId(), tableUpdateIssue.isAdd()));
+    public ResponseEntity<?> addIssueInTable(@RequestBody TableUpdateIssue tableUpdateIssue) throws Exception {
+        return ResponseEntity.ok(tableBus.updateTableIssue(tableUpdateIssue.getTableId(), tableUpdateIssue.getIssueId(), tableUpdateIssue.isAdd()));
     }
 
 

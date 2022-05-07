@@ -43,7 +43,9 @@ public class GameTable {
             inverseJoinColumns = @JoinColumn(name = "user_id"))
     private Set<User> joins = new HashSet<>();
 
-
+    @OneToOne(targetEntity = Issue.class, fetch = FetchType.EAGER)
+    @JoinColumn(name = "issue_id")
+    private Issue issueActive;
 
     public GameTable(){
         this.name = "Planning poker game";

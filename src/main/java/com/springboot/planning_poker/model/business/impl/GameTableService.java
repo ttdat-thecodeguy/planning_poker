@@ -6,11 +6,14 @@ import com.springboot.planning_poker.model.enity.Issue;
 import com.springboot.planning_poker.model.enity.User;
 import com.springboot.planning_poker.model.payload.request.TableUpdateUser;
 import com.springboot.planning_poker.model.responsitory.GameJoinsRepo;
+import com.springboot.planning_poker.model.responsitory.IssueRepo;
 import com.springboot.planning_poker.model.responsitory.TableRepo;
 import com.springboot.planning_poker.model.responsitory.UserRepo;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.persistence.Tuple;
 import java.util.List;
@@ -22,7 +25,7 @@ import java.util.List;
 public class GameTableService implements ITable {
     private final TableRepo tableRepo;
     private final UserRepo userRepo;
-    private final GameJoinsRepo gameJoinsRepo;
+    private final IssueRepo issueRepo;
     @Override
     public GameTable addTable(GameTable table, Long userId) {
         if(userId != null){
@@ -34,20 +37,22 @@ public class GameTableService implements ITable {
     }
 
     @Override
-    public void addGuestToTableAsCreated(TableUpdate tableUpdate) {
+    public void addGuestToTableAsCreated(TableUpdateUser tableUpdate) {
         tableRepo.addUserToTable(tableUpdate.getUserId(), tableUpdate.getTableId());
     }
 
     @Override
-    public void addUserToTable(TableUpdate tableUpdate) {
+    public void updateJoinUserToTable(TableUpdateUser tableUpdate) {
         GameTable gameTable = tableRepo.getById(tableUpdate.getTableId());
         User user = userRepo.getById(tableUpdate.getUserId());
         gameTable.addUsersJoin(user);
     }
 
     @Override
-    public GameTable getTableById(String id) {
-        return tableRepo.findById(id).orElse(null);
+    public GameTable findTableById(String id) {
+        GameTable table = tableRepo.findById(id).orElse(null);
+        if(table == null) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Table Not in DB");
+        return table;
     }
 
 	@Override
@@ -58,19 +63,16 @@ public class GameTableService implements ITable {
 		return tableRepo.save(table);
 	}
 
-
-
-//    @Override
-//    public List<Tuple> getDetailsOfTable(String id) {
-//        return gameJoinsRepo.findAllById_TableId(id);
-//
-//    }
-
-//    @Override @Transactional
-//    public List<UserSocketRequest> removeUserFromTableAndGetList(String id, Long userId) {
-//        GameTable gameTable = tableRepo.getById(id);
-//        User user = userRepo.getById(userId);
-//        return gameTable.removeUsersJoin(user).getListUserSocketRequest();
-//    }
-
+    @Override
+    public Issue updateTableIssue(String tableId, String issueId, boolean isAdd) {
+        GameTable gameTable = this.findTableById(tableId);
+        Issue issue = issueRepo.findById(issueId).orElse(null);
+        if(!isAdd){
+            gameTable.setIssueActive(issue);
+        } else{
+            gameTable.setIssueActive(null);
+        }
+        tableRepo.save(gameTable);
+        return issue;
+    }
 }
