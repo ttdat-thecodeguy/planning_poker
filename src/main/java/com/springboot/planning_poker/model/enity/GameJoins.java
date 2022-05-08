@@ -20,6 +20,13 @@ public class GameJoins implements Serializable {
     @Column(columnDefinition = "bool DEFAULT FALSE")
     private boolean isSpectator = false;
 
+    public GameJoins(GameJoinId id, String item, boolean isFlip, boolean isSpectator){
+        this.id = id;
+        this.item = item;
+        this.isFlip = isFlip;
+        this.isSpectator = isSpectator;
+    }
+
     @ManyToOne(targetEntity = User.class, fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "user_id", insertable = false, updatable = false)
     private User user;

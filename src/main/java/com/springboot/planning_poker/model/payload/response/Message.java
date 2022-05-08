@@ -6,17 +6,14 @@ import lombok.NoArgsConstructor;
 
 @Data @AllArgsConstructor @NoArgsConstructor
 public class Message {
-
     protected Long sender;
     protected String table;
     protected String content;
+    private boolean spectator;
     protected MessageType messageType;
     protected String issue;
     public enum MessageType {
         JOIN,
-
-        /* ---GAME--- */
-
         /// SELECTED CARD
         SELECTED,
         UNSELECTED_CARD,

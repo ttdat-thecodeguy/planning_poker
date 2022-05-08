@@ -8,7 +8,7 @@ import lombok.Setter;
 public class SuccessMessage extends Message{
 
     public SuccessMessage(Message message){
-        super(message.getSender(), message.getTable(), message.getContent(), message.getMessageType(), message.getIssue());
+        super(message.getSender(), message.getTable(), message.getContent(),  message.isSpectator() , message.getMessageType(), message.getIssue());
     }
 
     @Getter @Setter

@@ -1,9 +1,7 @@
 package com.springboot.planning_poker.model.business.impl;
 
 import com.springboot.planning_poker.model.business.ITable;
-import com.springboot.planning_poker.model.enity.GameTable;
-import com.springboot.planning_poker.model.enity.Issue;
-import com.springboot.planning_poker.model.enity.User;
+import com.springboot.planning_poker.model.enity.*;
 import com.springboot.planning_poker.model.payload.request.TableUpdateUser;
 import com.springboot.planning_poker.model.responsitory.GameJoinsRepo;
 import com.springboot.planning_poker.model.responsitory.IssueRepo;
@@ -26,6 +24,7 @@ public class GameTableService implements ITable {
     private final TableRepo tableRepo;
     private final UserRepo userRepo;
     private final IssueRepo issueRepo;
+    private final GameJoinsRepo gameJoinsRepo;
     @Override
     public GameTable addTable(GameTable table, Long userId) {
         if(userId != null){
@@ -42,10 +41,10 @@ public class GameTableService implements ITable {
     }
 
     @Override
-    public void updateJoinUserToTable(TableUpdateUser tableUpdate) {
+    public void updateJoinUserToTable(TableUpdateUser tableUpdate, boolean isSpectator) {
         GameTable gameTable = this.findTableById(tableUpdate.getTableId());
         User user = userRepo.getById(tableUpdate.getUserId());
-        gameTable.addUsersJoin(user);
+        gameJoinsRepo.save(new GameJoins(new GameJoinId(gameTable.getId(), user.getId()), null, false, isSpectator));
     }
 
     @Override

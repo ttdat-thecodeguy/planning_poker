@@ -33,12 +33,13 @@ public class PlayGameController {
     	
         headerAccessor.getSessionAttributes().put("id", message.getSender());
         headerAccessor.getSessionAttributes().put("table", message.getTable());
-        tableBus.updateJoinUserToTable(new TableUpdateUser(message.getTable(), message.getSender()));
-        //// TODO Need to re-code this
+
+        tableBus.updateJoinUserToTable(new TableUpdateUser(message.getTable(), message.getSender()), message.isSpectator());
         List<GameJoinsDTO> tableDetails = gameJoinsBus.getDetailOfTable(message.getTable());
         Gson gson = new GsonBuilder().create();
         String json = gson.toJson(tableDetails);
         message.setContent(json);
+        message.setSpectator(message.isSpectator());
         return message;
     }
 
