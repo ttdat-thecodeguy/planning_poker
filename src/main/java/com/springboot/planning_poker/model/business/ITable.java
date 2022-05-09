@@ -15,4 +15,5 @@ public interface ITable {
     GameTable updateTableOwner(Long userId, String tableId) throws Exception;
     public Issue updateTableIssue(String tableId, String issueId, boolean isAdd);
     public void addGuestToTableAsCreated(TableUpdateUser tableUpdate);
+
 }

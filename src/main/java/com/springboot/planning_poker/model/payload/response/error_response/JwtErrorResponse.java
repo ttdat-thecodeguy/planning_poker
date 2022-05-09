@@ -1,15 +1,14 @@
-package com.springboot.planning_poker.model.payload.response.error_message;
+package com.springboot.planning_poker.model.payload.response.error_response;
 
 import org.springframework.http.HttpStatus;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
-public class JwtErrorMessage extends ErrorMessage{
+public class JwtErrorResponse extends ErrorResponse {
 	// for jwt
 	
-	public JwtErrorMessage(HttpStatus status, String message, boolean isJwtExpired, boolean isRefreshTokenExpired) {
+	public JwtErrorResponse(HttpStatus status, String message, boolean isJwtExpired, boolean isRefreshTokenExpired) {
 		super(status, message);
 		this.isJwtExpired = isJwtExpired;
 		this.isRefreshTokenExpired = isRefreshTokenExpired;

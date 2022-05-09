@@ -13,4 +13,5 @@ public interface IGameJoins {
     public void updateGameWhenSelected(String tableId, Long userId, String item);
     public void updateGameWhenUnSelected(String tableId, Long userId);
     public void updateGameWhenSwitchSpectator(String tableId, Long userId, boolean isSpectator);
+    public boolean isUserOwnerLeave(Long userId, String tableId);
 }

@@ -1,4 +1,4 @@
-package com.springboot.planning_poker.model.payload.response;
+package com.springboot.planning_poker.model.payload.response.socket_message;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -25,7 +25,6 @@ public class Message {
         /// RESTART GAME
         START_NEW_VOTE,
         START_NEW_VOTE_WITH_ISSUE,
-
         /* ---ISSUE---- */
         ADD_ISSUE,
         DELETE_ALL_ISSUE,
@@ -34,5 +33,6 @@ public class Message {
         IMPORT_FROM_URLS,
         IMPORT_FROM_CSV,
         LEAVE
+
     }
 }

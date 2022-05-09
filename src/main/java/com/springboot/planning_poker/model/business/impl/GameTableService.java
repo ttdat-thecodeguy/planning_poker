@@ -40,6 +40,8 @@ public class GameTableService implements ITable {
         tableRepo.addUserToTable(tableUpdate.getUserId(), tableUpdate.getTableId());
     }
 
+
+
     @Override
     public void updateJoinUserToTable(TableUpdateUser tableUpdate, boolean isSpectator) {
         GameTable gameTable = this.findTableById(tableUpdate.getTableId());

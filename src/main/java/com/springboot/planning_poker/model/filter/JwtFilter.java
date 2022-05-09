@@ -2,10 +2,9 @@ package com.springboot.planning_poker.model.filter;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.springboot.planning_poker.model.payload.response.error_message.JwtErrorMessage;
+import com.springboot.planning_poker.model.payload.response.error_response.JwtErrorResponse;
 import com.springboot.planning_poker.model.utils.JwtUtils;
 import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.JwtException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -42,7 +41,7 @@ public class JwtFilter extends OncePerRequestFilter {
 //            	 log.info("jwt is expired ");
 
             	
-            	 JwtErrorMessage message = new JwtErrorMessage(HttpStatus.BAD_REQUEST, "token is expired", true, false);
+            	 JwtErrorResponse message = new JwtErrorResponse(HttpStatus.BAD_REQUEST, "token is expired", true, false);
             	 Gson gson = new GsonBuilder().create();
             	 String json = gson.toJson(message);
             	 

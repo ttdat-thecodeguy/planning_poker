@@ -1,10 +1,9 @@
 package com.springboot.planning_poker.model.exception;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.springboot.planning_poker.model.payload.response.error_message.ErrorMessage;
-import com.springboot.planning_poker.model.payload.response.error_message.UsernameNotFoundMessage;
+import com.springboot.planning_poker.model.payload.response.error_response.ErrorResponse;
+import com.springboot.planning_poker.model.payload.response.error_response.UsernameNotFoundResponse;
 
 import io.jsonwebtoken.JwtException;
 
@@ -25,11 +24,11 @@ public class AuthHandleException implements AuthenticationEntryPoint {
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException, JwtException {
         
     	
-    	ErrorMessage message = null;
+    	ErrorResponse message = null;
     	
     	if(authException instanceof UsernameNotFoundException) {
     		response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
-    		message = new UsernameNotFoundMessage(HttpStatus.INTERNAL_SERVER_ERROR, authException.getMessage(), true);
+    		message = new UsernameNotFoundResponse(HttpStatus.INTERNAL_SERVER_ERROR, authException.getMessage(), true);
     	}
     	
     	Gson gson = new GsonBuilder().create();

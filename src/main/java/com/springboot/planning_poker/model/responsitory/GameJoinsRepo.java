@@ -21,6 +21,6 @@ public interface GameJoinsRepo extends JpaRepository<GameJoins, GameJoinId> {
 //    @Query("SELECT g, u.displayName, t.issueActive.id, t.issueActive.name FROM GameJoins g JOIN User u ON g.id.userId = u.id JOIN GameTable t ON g.id.tableId = t.id left join t.issueActive WHERE g.id.tableId = :tableId")
 //    List<Tuple> findDetailsOfTableById_TableId(@Param("tableId") String tableId);
 
-    @Query("SELECT COUNT(g.item) as count, g.item as item FROM GameJoins g WHERE g.id.tableId = :tableId GROUP BY g.item")
+    @Query("SELECT COUNT(g.item) as count, g.item as item FROM GameJoins g WHERE g.id.tableId = :tableId AND g.isSpectator = false AND g.item IS NOT NULL GROUP BY g.item")
     List<IDeckCount> countDeckInTable(@Param("tableId") String tableId);
 }

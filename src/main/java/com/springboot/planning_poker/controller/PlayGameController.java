@@ -8,8 +8,8 @@ import com.springboot.planning_poker.model.business.ITableIssue;
 import com.springboot.planning_poker.model.dto.impl.DeckCountDTO;
 import com.springboot.planning_poker.model.dto.impl.GameJoinsDTO;
 import com.springboot.planning_poker.model.payload.request.TableUpdateUser;
-import com.springboot.planning_poker.model.payload.response.Message;
-import com.springboot.planning_poker.model.payload.response.SuccessMessage;
+import com.springboot.planning_poker.model.payload.response.socket_message.Message;
+import com.springboot.planning_poker.model.payload.response.socket_message.SuccessMessage;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -107,9 +107,6 @@ public class PlayGameController {
     @MessageMapping("/start-new-vote")
     @SendTo("/topic/public")
     public Message startNewVote(@Payload Message message){
-        /// TODO clean all data in game joins table
-        /// TODO - viết tạm bên front
-        /// TODO - sửa cái spectator // xong
         return message;
     }
 
