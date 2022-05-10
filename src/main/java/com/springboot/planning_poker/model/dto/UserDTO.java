@@ -1,4 +1,4 @@
-package com.springboot.planning_poker.model.dto.impl;
+package com.springboot.planning_poker.model.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -8,5 +8,4 @@ import lombok.NoArgsConstructor;
 public class UserDTO {
     private Long id;
     private String displayName;
-//    private boolean isSpector;
 }

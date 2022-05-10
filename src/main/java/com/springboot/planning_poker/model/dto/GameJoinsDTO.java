@@ -1,4 +1,4 @@
-package com.springboot.planning_poker.model.dto.impl;
+package com.springboot.planning_poker.model.dto;
 
 import com.springboot.planning_poker.model.enity.GameJoinId;
 import lombok.AllArgsConstructor;

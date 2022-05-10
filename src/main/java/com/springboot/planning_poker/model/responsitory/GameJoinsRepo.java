@@ -1,6 +1,6 @@
 package com.springboot.planning_poker.model.responsitory;
 
-import com.springboot.planning_poker.model.dto.IDeckCount;
+import com.springboot.planning_poker.model.dto.DeckCountDTO;
 import com.springboot.planning_poker.model.enity.GameJoinId;
 import com.springboot.planning_poker.model.enity.GameJoins;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -8,7 +8,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import javax.persistence.Tuple;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,9 +17,10 @@ public interface GameJoinsRepo extends JpaRepository<GameJoins, GameJoinId> {
 
     Optional<GameJoins> findById(GameJoinId id);
     List<GameJoins> findById_TableId(String id);
-//    @Query("SELECT g, u.displayName, t.issueActive.id, t.issueActive.name FROM GameJoins g JOIN User u ON g.id.userId = u.id JOIN GameTable t ON g.id.tableId = t.id left join t.issueActive WHERE g.id.tableId = :tableId")
-//    List<Tuple> findDetailsOfTableById_TableId(@Param("tableId") String tableId);
 
-    @Query("SELECT COUNT(g.item) as count, g.item as item FROM GameJoins g WHERE g.id.tableId = :tableId AND g.isSpectator = false AND g.item IS NOT NULL GROUP BY g.item")
-    List<IDeckCount> countDeckInTable(@Param("tableId") String tableId);
+    @Query("SELECT new com.springboot.planning_poker.model.dto.DeckCountDTO(g.item, COUNT(g.item))" +
+            "FROM GameJoins g "+
+            "WHERE g.id.tableId = :tableId AND g.isSpectator = false AND g.item IS NOT NULL " +
+            "GROUP BY g.item")
+    List<DeckCountDTO> countDeckInTable(@Param("tableId") String tableId);
 }

@@ -1,6 +1,7 @@
 package com.springboot.planning_poker.model.business.impl;
 
 import com.springboot.planning_poker.model.business.ITable;
+import com.springboot.planning_poker.model.definition.StatusCode;
 import com.springboot.planning_poker.model.enity.*;
 import com.springboot.planning_poker.model.payload.request.TableUpdateUser;
 import com.springboot.planning_poker.model.responsitory.GameJoinsRepo;
@@ -28,7 +29,6 @@ public class GameTableService implements ITable {
     @Override
     public GameTable addTable(GameTable table, Long userId) {
         if(userId != null){
-            //add owner to joined
             table.setUserOwerId(userId);
         }
         table.setName(table.getName() == "" ? "Planning Poker Game" : table.getName());
@@ -46,18 +46,19 @@ public class GameTableService implements ITable {
     public void updateJoinUserToTable(TableUpdateUser tableUpdate, boolean isSpectator) {
         GameTable gameTable = this.findTableById(tableUpdate.getTableId());
         User user = userRepo.getById(tableUpdate.getUserId());
-        gameJoinsRepo.save(new GameJoins(new GameJoinId(gameTable.getId(), user.getId()), null, false, isSpectator));
+        GameJoins gameJoins = GameJoins.builder().id(new GameJoinId(gameTable.getId(), user.getId())).isSpectator(isSpectator).build();
+        gameJoinsRepo.save(gameJoins);
     }
 
     @Override
     public GameTable findTableById(String id) {
         GameTable table = tableRepo.findById(id).orElse(null);
-        if(table == null) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Table Not in DB");
+        if(table == null) throw new ResponseStatusException(HttpStatus.NOT_FOUND, StatusCode.TABLE_NOT_FOUND);
         return table;
     }
 
 	@Override
-	public GameTable updateTableOwner(Long userId, String tableId) throws Exception {
+	public GameTable updateTableOwner(Long userId, String tableId)  {
 		GameTable table = this.findTableById(tableId);
 		table.setUserOwerId(userId);
 		return tableRepo.save(table);

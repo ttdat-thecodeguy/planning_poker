@@ -1,6 +1,8 @@
 package com.springboot.planning_poker.model.enity;
 
+import com.springboot.planning_poker.model.definition.RoleEnum;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -11,6 +13,7 @@ import java.io.Serializable;
 @Table(name = "game_joins") @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class GameJoins implements Serializable {
     @EmbeddedId
     private GameJoinId id;
@@ -26,7 +29,6 @@ public class GameJoins implements Serializable {
         this.isFlip = isFlip;
         this.isSpectator = isSpectator;
     }
-
     @ManyToOne(targetEntity = User.class, fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "user_id", insertable = false, updatable = false)
     private User user;

@@ -5,8 +5,7 @@ import com.google.gson.GsonBuilder;
 import com.springboot.planning_poker.model.business.IGameJoins;
 import com.springboot.planning_poker.model.business.ITable;
 import com.springboot.planning_poker.model.business.ITableIssue;
-import com.springboot.planning_poker.model.dto.impl.DeckCountDTO;
-import com.springboot.planning_poker.model.dto.impl.GameJoinsDTO;
+import com.springboot.planning_poker.model.dto.GameJoinsDTO;
 import com.springboot.planning_poker.model.payload.request.TableUpdateUser;
 import com.springboot.planning_poker.model.payload.response.socket_message.Message;
 import com.springboot.planning_poker.model.payload.response.socket_message.SuccessMessage;
@@ -92,7 +91,7 @@ public class PlayGameController {
     @SendTo("/topic/public")
     public SuccessMessage showCard(@Payload Message message){
         SuccessMessage result = new SuccessMessage(message);
-        List<DeckCountDTO> resultDetails = gameJoinsBus.getGameResult(message.getTable());
+        var resultDetails = gameJoinsBus.getGameResult(message.getTable());
         if (message.getIssue() != null){
             var deckCount = gameJoinsBus.calculateGameResult(resultDetails);
             result.setStoryPoint(deckCount.getItem());

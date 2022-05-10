@@ -39,14 +39,7 @@ public class PlanningPokerApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        User u1 = userBus.addUser(new User(null, "123@gmail.com",passwordEncoder.encode("1234"),"nam","user_default.jpg",false, new HashSet<>(), new HashSet<>()));
-        User u2 = userBus.addUser(new User(null, "234@gmail.com",passwordEncoder.encode("1234"),"Hai","user_default.jpg",false, new HashSet<>(), new HashSet<>()));
-        //roles
         roleBus.addRole(new Role(1, "ROLE_USER"));
         roleBus.addRole(new Role(2, "ROLE_ADMIN"));
-
-        userBus.addRoleToUser(u1.getId(), 1);
-        userBus.addRoleToUser(u2.getId(), 2);
-
     }
 }

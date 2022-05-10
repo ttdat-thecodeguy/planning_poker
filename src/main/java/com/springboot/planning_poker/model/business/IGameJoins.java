@@ -1,7 +1,7 @@
 package com.springboot.planning_poker.model.business;
 
-import com.springboot.planning_poker.model.dto.impl.DeckCountDTO;
-import com.springboot.planning_poker.model.dto.impl.GameJoinsDTO;
+import com.springboot.planning_poker.model.dto.DeckCountDTO;
+import com.springboot.planning_poker.model.dto.GameJoinsDTO;
 
 import java.util.List;
 

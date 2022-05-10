@@ -2,8 +2,8 @@ package com.springboot.planning_poker.model.business.impl;
 
 import com.springboot.planning_poker.model.business.IGameJoins;
 import com.springboot.planning_poker.model.business.ITable;
-import com.springboot.planning_poker.model.dto.impl.DeckCountDTO;
-import com.springboot.planning_poker.model.dto.impl.GameJoinsDTO;
+import com.springboot.planning_poker.model.dto.DeckCountDTO;
+import com.springboot.planning_poker.model.dto.GameJoinsDTO;
 import com.springboot.planning_poker.model.enity.GameJoinId;
 import com.springboot.planning_poker.model.enity.GameJoins;
 import com.springboot.planning_poker.model.enity.GameTable;
@@ -30,8 +30,7 @@ public class GameJoinService implements IGameJoins {
     }
 
     public List<DeckCountDTO> getGameResult(String tableId) {
-        List<DeckCountDTO> lstDeckCountDTO = gameJoinsRepo.countDeckInTable(tableId).stream().map(DeckCountDTO::new).collect(Collectors.toList());
-        return lstDeckCountDTO;
+       return gameJoinsRepo.countDeckInTable(tableId);
     }
 
     @Override
