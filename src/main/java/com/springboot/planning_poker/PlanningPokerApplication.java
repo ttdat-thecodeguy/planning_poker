@@ -3,6 +3,7 @@ package com.springboot.planning_poker;
 import com.springboot.planning_poker.model.business.IRole;
 import com.springboot.planning_poker.model.business.ITable;
 import com.springboot.planning_poker.model.business.IUser;
+import com.springboot.planning_poker.model.definition.RoleEnum;
 import com.springboot.planning_poker.model.enity.GameTable;
 import com.springboot.planning_poker.model.enity.Role;
 import com.springboot.planning_poker.model.enity.User;
@@ -17,29 +18,25 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.HashSet;
+import java.util.Set;
 
 @SpringBootApplication
 @Slf4j
 public class PlanningPokerApplication implements CommandLineRunner {
 
-    @Autowired private UserRepo userRepo;
-
-     @Autowired private IUser userBus;
-     @Autowired private IRole roleBus;
-     @Autowired private ITable tableBus;
-     @Autowired private PasswordEncoder passwordEncoder;
-     @Autowired private TableRepo tableRepo;
-
-
-     @Autowired private GameJoinsRepo gameJoinsRepo;
-
     public static void main(String[] args) {
         SpringApplication.run(PlanningPokerApplication.class, args);
     }
-
+    @Autowired private IRole roleBus;
+    @Autowired private IUser userBus;
+    @Autowired private PasswordEncoder encoder;
     @Override
     public void run(String... args) throws Exception {
-        roleBus.addRole(new Role(1, "ROLE_USER"));
-        roleBus.addRole(new Role(2, "ROLE_ADMIN"));
+        Role roleUser = new Role(RoleEnum.ROLE_USER);
+        Role roleAdmin = new Role(RoleEnum.ROLE_ADMIN);
+        User user = User.builder().id(null).displayName("testA").email("test@123.com").password(encoder.encode("123")).roles(Set.of(roleAdmin)).build();
+        roleBus.addRole(roleUser);
+        roleBus.addRole(roleAdmin);
+        userBus.addUser(user);
     }
 }

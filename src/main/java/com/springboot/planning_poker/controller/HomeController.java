@@ -33,7 +33,7 @@ public class HomeController {
     public ResponseEntity<?> signUpAsGuest(@RequestBody User user,
                                            @RequestParam String tableId,
                                            @RequestParam(required = false) Boolean isSpectator) {
-        return ResponseEntity.ok(userBus.signupAsGuest(user, isSpectator, tableId));
+        return ResponseEntity.ok(userBus.signupAsGuest(user, isSpectator));
     }
     
     @PostMapping("/refresh-token")

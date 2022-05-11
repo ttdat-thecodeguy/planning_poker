@@ -1,8 +1,9 @@
 package com.springboot.planning_poker.model.payload.request;
 
+import lombok.Builder;
 import lombok.Data;
 
-@Data
+@Data @Builder
 public class LoginRequest {
     private String email;
     private String password;

@@ -17,8 +17,8 @@ public interface IUser{
      User addUser(User user);
      void updateUser(UserUpdateRequest user);
      void deleteUser(Long id);
-     UserResponse login(@RequestBody LoginRequest userLogin) throws Exception;
+     UserResponse login(LoginRequest userLogin) throws Exception;
      UserResponse signup(@RequestBody User user) throws Exception;
-     UserResponse signupAsGuest(@RequestBody User user, Boolean isSpectator, String tableid);
+     UserResponse signupAsGuest(@RequestBody User user, Boolean isSpectator);
      void addRoleToUser(Long userid, Integer role_id);
 }

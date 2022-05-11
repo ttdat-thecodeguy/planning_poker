@@ -2,20 +2,29 @@ package com.springboot.planning_poker.model.business.impl;
 
 import com.springboot.planning_poker.model.enity.User;
 import com.springboot.planning_poker.model.responsitory.UserRepo;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Component @Transactional
+@Service
+@Transactional
+@AllArgsConstructor
+@NoArgsConstructor
 public class AuthService implements UserDetailsService {
-    @Autowired private UserRepo userRepo;
+
+    @Autowired
+    private UserRepo userRepo;
+
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         User user = userRepo.findUserByEmail(email);

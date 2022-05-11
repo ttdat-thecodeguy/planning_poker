@@ -12,20 +12,23 @@ import com.springboot.planning_poker.model.responsitory.TableRepo;
 import com.springboot.planning_poker.model.responsitory.UserRepo;
 import com.springboot.planning_poker.model.payload.request.UserUpdateRequest;
 import com.springboot.planning_poker.model.utils.JwtUtils;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.transaction.Transactional;
 import java.util.List;
 
-@Component @Slf4j
+@Component @Slf4j @AllArgsConstructor
 public class UserService implements IUser {
 
      @Autowired private UserRepo userRepo;
@@ -45,7 +48,7 @@ public class UserService implements IUser {
 
     @Override
     public User findUserByEmail(String email) {
-        return findUserByEmail(email);
+        return userRepo.findUserByEmail(email);
     }
 
     @Override
@@ -110,7 +113,7 @@ public class UserService implements IUser {
     }
 
     @Override @Transactional
-    public UserResponse signupAsGuest(User user, Boolean isSpectator, String tableid) {
+    public UserResponse signupAsGuest(User user, Boolean isSpectator) {
         //check is spectator
         isSpectator = isSpectator != null && isSpectator;
         // set attr to user
@@ -127,8 +130,9 @@ public class UserService implements IUser {
 
     @Override @Transactional
     public void addRoleToUser(Long userid, Integer role_id) {
-        User user = userRepo.getById(userid);
-        Role role = roleRepo.getById(role_id);
+        User user = userRepo.findById(userid).orElse(null);
+        Role role = roleRepo.findById(role_id).orElse(null);
+        if(user == null || role == null) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "resource not found");
         user.getRoles().add(role);
     }
 }
