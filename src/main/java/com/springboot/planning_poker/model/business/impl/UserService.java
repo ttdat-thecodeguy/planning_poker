@@ -2,6 +2,7 @@ package com.springboot.planning_poker.model.business.impl;
 
 import com.springboot.planning_poker.model.business.IUser;
 import com.springboot.planning_poker.model.definition.RoleEnum;
+import com.springboot.planning_poker.model.definition.StatusCode;
 import com.springboot.planning_poker.model.enity.GameTable;
 import com.springboot.planning_poker.model.enity.Role;
 import com.springboot.planning_poker.model.enity.User;
@@ -21,6 +22,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ResponseStatusException;
@@ -48,7 +50,10 @@ public class UserService implements IUser {
 
     @Override
     public User findUserByEmail(String email) {
-        return userRepo.findUserByEmail(email);
+        User user = userRepo.findByEmail(email).orElse(null);
+        if(user == null) throw new UsernameNotFoundException("email not found");
+        return user;
+
     }
 
     @Override
@@ -84,12 +89,12 @@ public class UserService implements IUser {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                     userLogin.getEmail(), userLogin.getPassword()));
         } catch (DisabledException e) {
-            throw new Exception("USER_DISABLED", e);
+            throw new Exception(StatusCode.USER_DISABLED, e);
         } catch (BadCredentialsException e) {
-            throw new Exception("INVALID_CREDENTIALS", e);
+            throw new Exception(StatusCode.INVALID_CREDENTIALS, e);
         }
         log.info(userLogin.getEmail());
-        User user = userRepo.findUserByEmail(userLogin.getEmail());
+        User user = this.findUserByEmail(userLogin.getEmail());
         String token = jwtUtils.generateToken(user.getEmail(), user.getId());
         
         String refreshToken = refreshTokenService.createRefreshToken(user.getId()).getToken();
@@ -100,8 +105,8 @@ public class UserService implements IUser {
 
     @Override @Transactional
     public UserResponse signup(User user) throws Exception {
-        if(userRepo.findUserByEmail(user.getEmail()) != null){
-            throw new Exception("User is registered, Please choose another email");
+        if(this.findUserByEmail(user.getEmail()) != null){
+            throw new Exception(StatusCode.EMAIL_EXISTS);
         }
         user.getRoles().add(new Role(RoleEnum.ROLE_USER));
         user.setPassword(encoder.encode(user.getPassword()));

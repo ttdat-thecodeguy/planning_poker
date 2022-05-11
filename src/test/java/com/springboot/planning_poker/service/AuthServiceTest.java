@@ -1,5 +1,6 @@
 package com.springboot.planning_poker.service;
 
+import com.springboot.planning_poker.constant.Constant;
 import com.springboot.planning_poker.model.business.IRole;
 import com.springboot.planning_poker.model.business.IUser;
 import com.springboot.planning_poker.model.business.impl.AuthService;
@@ -46,13 +47,13 @@ public class AuthServiceTest {
 
     @Test
     public void whenLoadByExistsEmail_shouldReturnUser(){
-        String email = "test@123.com";
+        String email = Constant.EMAIL_TEST;
         assertThat(authService.loadUserByUsername(email).getUsername()).isEqualTo(email);
     }
 
     @Test
     public void whenLoadByUndefinedEmail_shouldThrowUsernameNotFoundException(){
-        assertThatThrownBy(() -> authService.loadUserByUsername("undefined@gmail.com")).isInstanceOf(UsernameNotFoundException.class);
+        assertThatThrownBy(() -> authService.loadUserByUsername(Constant.UNDEFINED_EMAIL_TEST)).isInstanceOf(UsernameNotFoundException.class);
     }
 
     @Test
