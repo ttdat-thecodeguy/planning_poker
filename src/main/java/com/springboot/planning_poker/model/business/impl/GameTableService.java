@@ -1,6 +1,7 @@
 package com.springboot.planning_poker.model.business.impl;
 
 import com.springboot.planning_poker.model.business.ITable;
+import com.springboot.planning_poker.model.business.IUser;
 import com.springboot.planning_poker.model.definition.Constants;
 import com.springboot.planning_poker.model.definition.StatusCode;
 import com.springboot.planning_poker.model.enity.*;
@@ -28,9 +29,11 @@ public class GameTableService implements ITable {
     private final UserRepo userRepo;
     private final IssueRepo issueRepo;
     private final GameJoinsRepo gameJoinsRepo;
+    private final IUser userBus;
     @Override
     public GameTable addTable(GameTable table, Long userId) {
         if(userId != null){
+            User u = userBus.findUserById(userId);
             table.setUserOwerId(userId);
         }
         table.setName(Objects.equals(table.getName(), "") || table.getName() == null ? Constants.GAME_DEFAULT_NAME : table.getName());
@@ -55,6 +58,7 @@ public class GameTableService implements ITable {
 	@Override
 	public GameTable updateTableOwner(Long userId, String tableId)  {
 		GameTable table = this.findTableById(tableId);
+        User u = userBus.findUserById(userId);
 		table.setUserOwerId(userId);
 		return tableRepo.save(table);
 	}

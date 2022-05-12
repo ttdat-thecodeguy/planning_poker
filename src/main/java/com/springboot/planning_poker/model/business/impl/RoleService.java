@@ -6,8 +6,10 @@ import com.springboot.planning_poker.model.enity.Role;
 import com.springboot.planning_poker.model.responsitory.RoleRepo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 @RequiredArgsConstructor @Slf4j @Component @Transactional
 public class RoleService implements IRole {
@@ -18,5 +20,12 @@ public class RoleService implements IRole {
             throw new Exception(StatusCode.ROLE_EXISTS);
         }
         return roleRepo.save(role);
+    }
+
+    @Override
+    public Role findRoleById(Integer id) {
+        Role role = roleRepo.findById(id).orElse(null);
+        if(role == null) throw new ResponseStatusException(HttpStatus.NOT_FOUND, StatusCode.ROLE_NOT_FOUND);
+        return role;
     }
 }

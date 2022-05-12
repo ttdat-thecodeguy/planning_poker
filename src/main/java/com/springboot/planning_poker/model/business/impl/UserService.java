@@ -1,5 +1,6 @@
 package com.springboot.planning_poker.model.business.impl;
 
+import com.springboot.planning_poker.model.business.IRole;
 import com.springboot.planning_poker.model.business.IUser;
 import com.springboot.planning_poker.model.definition.RoleEnum;
 import com.springboot.planning_poker.model.definition.StatusCode;
@@ -42,6 +43,7 @@ public class UserService implements IUser {
      @Autowired private AuthenticationManager authenticationManager;
      
      @Autowired private RefreshTokenService refreshTokenService;
+     @Autowired private IRole roleBus;
      
     @Override
     public List<User> getUsers() {
@@ -53,12 +55,13 @@ public class UserService implements IUser {
         User user = userRepo.findByEmail(email).orElse(null);
         if(user == null) throw new UsernameNotFoundException("email not found");
         return user;
-
     }
 
     @Override
-    public User getUserById(Long id) {
-        return userRepo.getById(id);
+    public User findUserById(Long id) {
+        User userFind = userRepo.findById(id).orElse(null);
+        if(userFind == null) throw new ResponseStatusException(HttpStatus.NOT_FOUND, StatusCode.USER_NOT_FOUND);
+        return userFind;
     }
 
     @Override @Transactional
@@ -68,7 +71,7 @@ public class UserService implements IUser {
 
     @Override @Transactional
     public void updateUser(UserUpdateRequest userUpdate) {
-        User user = userRepo.findById(userUpdate.getId()).get();
+        User user = this.findUserById(userUpdate.getId());
         if(userUpdate.getEmail() != null) user.setEmail(userUpdate.getEmail());
         if(userUpdate.getDisplayName() != null) user.setDisplayName(userUpdate.getDisplayName());
         if(userUpdate.getPassword() != null) {
@@ -135,9 +138,8 @@ public class UserService implements IUser {
 
     @Override @Transactional
     public void addRoleToUser(Long userid, Integer role_id) {
-        User user = userRepo.findById(userid).orElse(null);
-        Role role = roleRepo.findById(role_id).orElse(null);
-        if(user == null || role == null) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "resource not found");
+        User user = this.findUserById(userid);
+        Role role = roleBus.findRoleById(role_id);
         user.getRoles().add(role);
     }
 }

@@ -13,7 +13,7 @@ import java.util.List;
 public interface IUser{
      List<User> getUsers();
      User findUserByEmail(String email);
-     User getUserById(Long id);
+     User findUserById(Long id);
      User addUser(User user);
      void updateUser(UserUpdateRequest user);
      void deleteUser(Long id);
