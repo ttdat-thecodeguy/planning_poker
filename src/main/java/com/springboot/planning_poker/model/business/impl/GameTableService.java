@@ -1,6 +1,7 @@
 package com.springboot.planning_poker.model.business.impl;
 
 import com.springboot.planning_poker.model.business.ITable;
+import com.springboot.planning_poker.model.definition.Constants;
 import com.springboot.planning_poker.model.definition.StatusCode;
 import com.springboot.planning_poker.model.enity.*;
 import com.springboot.planning_poker.model.payload.request.TableUpdateUser;
@@ -16,6 +17,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import javax.persistence.Tuple;
 import java.util.List;
+import java.util.Objects;
 
 
 @Service
@@ -31,16 +33,9 @@ public class GameTableService implements ITable {
         if(userId != null){
             table.setUserOwerId(userId);
         }
-        table.setName(table.getName() == "" ? "Planning Poker Game" : table.getName());
+        table.setName(Objects.equals(table.getName(), "") || table.getName() == null ? Constants.GAME_DEFAULT_NAME : table.getName());
         return tableRepo.save(table);
     }
-
-    @Override
-    public void addGuestToTableAsCreated(TableUpdateUser tableUpdate) {
-        tableRepo.addUserToTable(tableUpdate.getUserId(), tableUpdate.getTableId());
-    }
-
-
 
     @Override
     public void updateJoinUserToTable(TableUpdateUser tableUpdate, boolean isSpectator) {

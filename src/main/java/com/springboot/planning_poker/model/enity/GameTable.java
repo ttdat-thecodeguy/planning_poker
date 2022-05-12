@@ -18,6 +18,7 @@ public class GameTable {
     @GeneratedValue(generator = "create_encode_id")
     @GenericGenerator(name = "create_encode_id", strategy = "com.springboot.planning_poker.model.enity.generated_id.GeneratorTableID")
     private String id;
+
     @Column(name = "name", columnDefinition = "varchar(255) default 'Planning poker game'")
     private String name = "Planning poker game";
 

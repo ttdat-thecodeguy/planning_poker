@@ -105,7 +105,7 @@ public class UserService implements IUser {
 
     @Override @Transactional
     public UserResponse signup(User user) throws Exception {
-        if(this.findUserByEmail(user.getEmail()) != null){
+        if(userRepo.findByEmail(user.getEmail()).orElse(null) != null){
             throw new Exception(StatusCode.EMAIL_EXISTS);
         }
         user.getRoles().add(new Role(RoleEnum.ROLE_USER));

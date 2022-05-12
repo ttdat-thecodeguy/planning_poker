@@ -3,6 +3,7 @@ package com.springboot.planning_poker;
 import com.springboot.planning_poker.model.business.IRole;
 import com.springboot.planning_poker.model.business.ITable;
 import com.springboot.planning_poker.model.business.IUser;
+import com.springboot.planning_poker.model.definition.Constants;
 import com.springboot.planning_poker.model.definition.RoleEnum;
 import com.springboot.planning_poker.model.enity.GameTable;
 import com.springboot.planning_poker.model.enity.Role;
@@ -30,6 +31,7 @@ public class PlanningPokerApplication implements CommandLineRunner {
     @Autowired private IRole roleBus;
     @Autowired private IUser userBus;
     @Autowired private PasswordEncoder encoder;
+    @Autowired private ITable tableBus;
     @Override
     public void run(String... args) throws Exception {
         Role roleUser = new Role(RoleEnum.ROLE_USER);
@@ -38,5 +40,8 @@ public class PlanningPokerApplication implements CommandLineRunner {
         roleBus.addRole(roleUser);
         roleBus.addRole(roleAdmin);
         userBus.addUser(user);
+
+
+
     }
 }

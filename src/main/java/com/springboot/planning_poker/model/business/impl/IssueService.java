@@ -44,7 +44,6 @@ public class IssueService implements ITableIssue{
 	@Override
 	public void importFromJira() {
 		// TODO Auto-generated method stub
-		
 	}
 
 

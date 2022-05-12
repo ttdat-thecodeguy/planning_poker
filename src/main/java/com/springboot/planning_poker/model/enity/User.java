@@ -7,6 +7,9 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.*;
 
 @Entity @NoArgsConstructor @AllArgsConstructor @Data @Table(name = "users") @Builder
@@ -14,10 +17,16 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @NotNull
+    @NotEmpty
     @Column(name = "email", unique = true)
     private String email;
+    @NotNull
+    @NotBlank
     @Column(name = "password")
     private String password;
+    @NotNull
+    @NotBlank
     @Column(name = "display_name")
     private String displayName;
     private String photo;

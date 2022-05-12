@@ -10,10 +10,8 @@ import java.util.List;
 
 public interface ITable {
     GameTable addTable(GameTable table, Long id );
-    public void updateJoinUserToTable(TableUpdateUser tableUpdate, boolean isSpectator);
+    void updateJoinUserToTable(TableUpdateUser tableUpdate, boolean isSpectator);
     GameTable findTableById(String id);
     GameTable updateTableOwner(Long userId, String tableId) throws Exception;
-    public Issue updateTableIssue(String tableId, String issueId, boolean isAdd);
-    public void addGuestToTableAsCreated(TableUpdateUser tableUpdate);
-
+    Issue updateTableIssue(String tableId, String issueId, boolean isAdd);
 }
