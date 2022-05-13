@@ -41,11 +41,11 @@ public class GameTableService implements ITable {
     }
 
     @Override
-    public void updateJoinUserToTable(TableUpdateUser tableUpdate, boolean isSpectator) {
+    public GameJoins updateJoinUserToTable(TableUpdateUser tableUpdate, boolean isSpectator) {
         GameTable gameTable = this.findTableById(tableUpdate.getTableId());
-        User user = userRepo.getById(tableUpdate.getUserId());
+        User user = this.userBus.findUserById(tableUpdate.getUserId());
         GameJoins gameJoins = GameJoins.builder().id(new GameJoinId(gameTable.getId(), user.getId())).isSpectator(isSpectator).build();
-        gameJoinsRepo.save(gameJoins);
+        return gameJoinsRepo.save(gameJoins);
     }
 
     @Override
@@ -67,6 +67,7 @@ public class GameTableService implements ITable {
     public Issue updateTableIssue(String tableId, String issueId, boolean isAdd) {
         GameTable gameTable = this.findTableById(tableId);
         Issue issue = issueRepo.findById(issueId).orElse(null);
+        if(issue == null) throw new ResponseStatusException(HttpStatus.NOT_FOUND, StatusCode.ISSUE_NOT_FOUND);
         if(!isAdd){
             gameTable.setIssueActive(issue);
         } else{

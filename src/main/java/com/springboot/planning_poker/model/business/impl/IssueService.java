@@ -5,6 +5,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.springboot.planning_poker.model.business.ITable;
+import com.springboot.planning_poker.model.definition.StatusCode;
 import com.springboot.planning_poker.model.enity.GameTable;
 import com.springboot.planning_poker.model.responsitory.TableRepo;
 import com.springboot.planning_poker.model.utils.Utils;
@@ -26,6 +28,13 @@ public class IssueService implements ITableIssue{
 	
 	@Autowired private IssueRepo issueRepo;
 	@Autowired private TableRepo tableRepo;
+	@Autowired private ITable tableBus;
+	@Override
+	public Issue findById(String id) {
+		Issue issue = issueRepo.findById(id).orElse(null);
+		if(issue == null) throw new ResponseStatusException(HttpStatus.NOT_FOUND, StatusCode.ISSUE_NOT_FOUND);
+		return issue;
+	}
 
 	@Override
 	public List<Issue> findIssueByGameTableId(String tableId) {
@@ -34,9 +43,7 @@ public class IssueService implements ITableIssue{
 
 	@Override
 	public Issue addIssue(Issue issue, String tableId) throws ResponseStatusException {
-		// TODO Auto-generated method stub
-		GameTable table = tableRepo.findById(tableId).orElse(null);
-		if(table == null) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Table Not in DB");
+		GameTable table = this.tableBus.findTableById(tableId);
 		issue.setGameTable(table);
 		return issueRepo.save(issue);
 	}
@@ -49,8 +56,7 @@ public class IssueService implements ITableIssue{
 
 	@Override
 	public List<Issue> importFromUrls(List<String> urls, String tableId) {
-		GameTable table = tableRepo.findById(tableId).orElse(null);
-		if(table == null) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Table Not in DB");
+		GameTable table = this.tableBus.findTableById(tableId);
 		return urls
 				.stream()
 				.map(url -> issueRepo.save(new Issue(null, url, url, null, table, null)))
@@ -59,15 +65,13 @@ public class IssueService implements ITableIssue{
 
 	@Override
 	public void deleteAllIssue(String tableId) {
-		GameTable table = tableRepo.findById(tableId).orElse(null);
-		if(table == null) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Table Not in DB");
+		GameTable table = this.tableBus.findTableById(tableId);
 		table.getIssues().clear();
 	}
 
 	@Override
 	public void updateResultToIssue( String id, String storyPoint) {
-		// TODO - update result to issue
-		Issue issue = issueRepo.findById(id).orElse(null);
+		Issue issue = this.findById(id);
 		issue.setStoryPoint(storyPoint);
 		issueRepo.save(issue);
 	}

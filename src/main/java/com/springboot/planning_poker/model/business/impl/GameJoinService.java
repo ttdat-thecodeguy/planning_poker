@@ -46,7 +46,7 @@ public class GameJoinService implements IGameJoins {
 
     @Override
     public DeckCountDTO calculateGameResult(List<DeckCountDTO> gameDetails) {
-        return gameDetails.stream().min(Comparator.comparing(DeckCountDTO::getCount)).orElse(gameDetails.get(0));
+        return gameDetails.stream().min(Comparator.comparing(DeckCountDTO::getCount)).orElse(null);
     }
 
     @Override @Transactional

@@ -31,7 +31,6 @@ public class PlanningPokerApplication implements CommandLineRunner {
     @Autowired private IRole roleBus;
     @Autowired private IUser userBus;
     @Autowired private PasswordEncoder encoder;
-    @Autowired private ITable tableBus;
     @Override
     public void run(String... args) throws Exception {
         Role roleUser = new Role(RoleEnum.ROLE_USER);
@@ -40,8 +39,5 @@ public class PlanningPokerApplication implements CommandLineRunner {
         roleBus.addRole(roleUser);
         roleBus.addRole(roleAdmin);
         userBus.addUser(user);
-
-
-
     }
 }

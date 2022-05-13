@@ -10,11 +10,12 @@ import java.io.IOException;
 import java.util.List;
 
 public interface ITableIssue {
-    public List<Issue> findIssueByGameTableId(String tableId);
-    public Issue addIssue(Issue issue, String tableId) throws ResponseStatusException;
-    public void importFromJira();
-    public List<Issue> importIssueFromCSVAndGetListIssue(MultipartFile file, String tableId, boolean isIncludeHeader) throws CsvValidationException, IOException;
-    public List<Issue> importFromUrls(List<String> urls, String tableId);
-    public void deleteAllIssue(String tableId);
-    public void updateResultToIssue(String id, String storyPoint);
+     Issue findById(String id);
+     List<Issue> findIssueByGameTableId(String tableId);
+     Issue addIssue(Issue issue, String tableId) throws ResponseStatusException;
+     void importFromJira();
+     List<Issue> importIssueFromCSVAndGetListIssue(MultipartFile file, String tableId, boolean isIncludeHeader) throws CsvValidationException, IOException;
+     List<Issue> importFromUrls(List<String> urls, String tableId);
+     void deleteAllIssue(String tableId);
+     void updateResultToIssue(String id, String storyPoint);
 }
