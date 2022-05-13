@@ -52,7 +52,7 @@ public class PlayGameController {
 
     @MessageMapping("/selected-card")
     @SendTo("/topic/public")
-    public Message selectedCard(@Payload Message message) {
+    public Message selectedCard(@Payload Message message) throws Exception {
     	log.info("message");
 
         gameJoinsBus.updateGameWhenSelected(message.getTable(),
@@ -106,11 +106,11 @@ public class PlayGameController {
     @MessageMapping("/start-new-vote")
     @SendTo("/topic/public")
     public Message startNewVote(@Payload Message message){
+        gameJoinsBus.resetGameJoins(message.getTable());
         return message;
     }
 
     /***/
-
     @MessageMapping("/add-issue")
     @SendTo("/topic/public")
     public Message addIssue(@Payload Message message){
@@ -129,14 +129,12 @@ public class PlayGameController {
         return message;
     }
 
-    /// import from urls
     @MessageMapping("/import-from-urls")
     @SendTo("/topic/public")
     public Message importFromUrls(@Payload Message message){
         return message;
     }
 
-    /// import from csv
     @MessageMapping("/import-from-csv")
     @SendTo("/topic/public")
     public Message importFromCSV(@Payload Message message){
