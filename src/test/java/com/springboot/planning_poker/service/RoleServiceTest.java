@@ -8,6 +8,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import javax.annotation.PostConstruct;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -15,6 +17,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 public class RoleServiceTest {
     @Autowired
     IRole roleBus;
+
     @Test
     public void whenAddRoleValid_returnThisRole() throws Exception {
         Role role
@@ -25,6 +28,6 @@ public class RoleServiceTest {
     @Test
     public void whenAddRoleExists_throwExceptionHasMessage(){
         Role roleUser = new Role(RoleEnum.ROLE_USER);
-        assertThatThrownBy(() -> roleBus.addRole(roleUser)).isInstanceOf(Exception.class).hasMessage(StatusCode.ROLE_EXISTS);
+        assertThatThrownBy(() -> roleBus.addRole(roleUser)).isInstanceOf(Exception.class);
     }
 }
