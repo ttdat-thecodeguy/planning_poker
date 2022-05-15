@@ -4,6 +4,7 @@ import java.time.Instant;
 import java.util.Optional;
 import java.util.UUID;
 
+import com.springboot.planning_poker.model.definition.StatusCode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -21,19 +22,18 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor @Service
 public class RefreshTokenService implements IRefreshToken{
-	
 	private final RefreshedTokenRepo refreshTokenRepo;
 	private final UserRepo userRepo;
 	
-//	@Value("${app.refreshed_time}")
-	private long refreshTime = 1000000;
+	@Value("${app.refreshed_time}")
+	private long refreshTime;
 	
 	@Autowired private JwtUtils jwtUtils;
 	
 	@Override
 	public RefreshToken findByToken(String token) throws TokenException {
 		RefreshToken refreshToken = refreshTokenRepo.findByToken(token).orElse(null);
-		if(refreshToken == null) throw new TokenException(token , "Token Not found in database");
+		if(refreshToken == null) throw new TokenException(token , StatusCode.REFRESH_TOKEN_NOT_FOUND);
 		return refreshToken;
 	}
 

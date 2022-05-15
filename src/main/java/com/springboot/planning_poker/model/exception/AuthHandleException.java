@@ -37,12 +37,5 @@ public class AuthHandleException implements AuthenticationEntryPoint {
     	response.setContentType("application/json");
    	 	response.getWriter().write(json);
    	 	return;
-    	
-//    	if(authException instanceof ExpiredJwtException) {
-//    		
-//    	}
-    	
-    	
-    	
     }
 }

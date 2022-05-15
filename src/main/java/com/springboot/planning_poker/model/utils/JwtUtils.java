@@ -17,14 +17,12 @@ import java.util.function.Function;
 public class JwtUtils {
     private static final long serialVersionUID = -2550185165626007488L;
     
-//    @Value("${app.expired_time}")
-    public long JWT_TOKEN_VALIDITY = 16800;
+    @Value("${app.expired_time}")
+    public long JWT_TOKEN_VALIDITY;
 
     @Value("${app.secret_key}")
     private String SECRET;
-    
-    @Value("${app.refreshed_time}")
-    private long JWT_REFRESH_TOKEN_VALIDITY;
+
     
     //retrieve username from jwt token
     public String getUsernameFromToken(String token) {

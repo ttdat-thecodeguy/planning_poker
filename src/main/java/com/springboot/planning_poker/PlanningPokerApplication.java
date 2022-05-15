@@ -35,9 +35,9 @@ public class PlanningPokerApplication implements CommandLineRunner {
     public void run(String... args) throws Exception {
         Role roleUser = new Role(RoleEnum.ROLE_USER);
         Role roleAdmin = new Role(RoleEnum.ROLE_ADMIN);
-        User user = User.builder().id(null).displayName("testA").email("test@123.com").password(encoder.encode("123")).roles(Set.of(roleAdmin)).build();
         roleBus.addRole(roleUser);
         roleBus.addRole(roleAdmin);
+        User user = User.builder().id(null).displayName("testA").email("test@123.com").password(encoder.encode("123")).roles(Set.of(roleAdmin)).build();
         userBus.addUser(user);
     }
 }

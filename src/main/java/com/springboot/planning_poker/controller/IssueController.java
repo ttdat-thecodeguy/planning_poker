@@ -4,6 +4,7 @@ import com.opencsv.exceptions.CsvValidationException;
 import com.springboot.planning_poker.model.business.ITableIssue;
 import com.springboot.planning_poker.model.business.impl.IssueService;
 import com.springboot.planning_poker.model.enity.Issue;
+import com.springboot.planning_poker.model.utils.Utils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -36,8 +37,11 @@ public class IssueController {
     public ResponseEntity<?> uploadAsCSV(@RequestParam("file") MultipartFile file,
                                          @RequestParam() String tableId,
                                          @RequestParam boolean isIncludeHeader) throws IOException, CsvValidationException {
+
+        File f = Utils.transferToFile(file);
+
         List<Issue> lst
-                = issueBus.importIssueFromCSVAndGetListIssue(file, tableId, isIncludeHeader);
+                = issueBus.importIssueFromCSVAndGetListIssue(f, tableId, isIncludeHeader);
         return ResponseEntity.ok(lst);
     }
     @PostMapping(value = "/import-as-urls")

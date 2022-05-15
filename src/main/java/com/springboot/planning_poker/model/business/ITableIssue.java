@@ -8,13 +8,14 @@ import org.springframework.web.server.ResponseStatusException;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.Set;
 
 public interface ITableIssue {
      Issue findById(String id);
      List<Issue> findIssueByGameTableId(String tableId);
      Issue addIssue(Issue issue, String tableId) throws ResponseStatusException;
      void importFromJira();
-     List<Issue> importIssueFromCSVAndGetListIssue(MultipartFile file, String tableId, boolean isIncludeHeader) throws CsvValidationException, IOException;
+     List<Issue> importIssueFromCSVAndGetListIssue(File file, String tableId, boolean isNotIncludeHeader) throws CsvValidationException, IOException;
      List<Issue> importFromUrls(List<String> urls, String tableId);
      void deleteAllIssue(String tableId);
      void updateResultToIssue(String id, String storyPoint);
