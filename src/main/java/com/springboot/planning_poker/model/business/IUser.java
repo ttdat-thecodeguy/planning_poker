@@ -15,7 +15,7 @@ public interface IUser{
      User findUserByEmail(String email);
      User findUserById(Long id);
      User addUser(User user);
-     void updateUser(UserUpdateRequest user);
+     User updateUser(UserUpdateRequest user) throws Exception;
      void deleteUser(Long id);
      UserResponse login(LoginRequest userLogin) throws Exception;
      UserResponse signup(@RequestBody User user) throws Exception;

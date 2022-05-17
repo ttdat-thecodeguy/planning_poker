@@ -26,7 +26,7 @@ public class RoleServiceTest {
     }
 
     @Test
-    public void whenAddRoleExists_throwExceptionHasMessage(){
+    public void whenAddRoleIsExists_throwExceptionHasMessage(){
         Role roleUser = new Role(RoleEnum.ROLE_USER);
         assertThatThrownBy(() -> roleBus.addRole(roleUser)).isInstanceOf(Exception.class);
     }

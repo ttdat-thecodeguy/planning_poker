@@ -30,7 +30,7 @@ public class UserController {
 
     //PUT HTTP method is used to modify/update a resource where the client sends data that updates the entire resource.
     @PutMapping(value = "/update")
-    public ResponseEntity<?> updateUser(UserUpdateRequest user) {
+    public ResponseEntity<?> updateUser(UserUpdateRequest user) throws Exception {
         userBus.updateUser(user);
         return ResponseEntity.ok("User Updated");
     }

@@ -70,15 +70,25 @@ public class UserService implements IUser {
     }
 
     @Override @Transactional
-    public void updateUser(UserUpdateRequest userUpdate) {
+    public User updateUser(UserUpdateRequest userUpdate) throws Exception {
         User user = this.findUserById(userUpdate.getId());
-        if(userUpdate.getEmail() != null) user.setEmail(userUpdate.getEmail());
-        if(userUpdate.getDisplayName() != null) user.setDisplayName(userUpdate.getDisplayName());
-        if(userUpdate.getPassword() != null) {
-            if(encoder.matches(userUpdate.getPassword(), user.getPassword()))
-                user.setPassword(userUpdate.getPassword());
+
+        if(userUpdate.getEmail() != null) {
+            if(userRepo.findByEmail(userUpdate.getEmail()).orElse(null) != null){
+                throw new Exception(StatusCode.EMAIL_EXISTS);
+            }
+            user.setEmail(userUpdate.getEmail());
         }
-        userRepo.save(user);
+        if(userUpdate.getDisplayName() != null) user.setDisplayName(userUpdate.getDisplayName());
+        if(userUpdate.getPassword() != null && userUpdate.getNewPassword() != null) {
+            if(encoder.matches(userUpdate.getPassword(), user.getPassword()))
+                user.setPassword(encoder.encode(userUpdate.getNewPassword()));
+            else
+                throw new Exception(StatusCode.PASSWORD_NOT_MATCH);
+        }
+
+
+        return userRepo.save(user);
     }
 
     @Override

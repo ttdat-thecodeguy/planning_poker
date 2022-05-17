@@ -14,13 +14,14 @@ import java.util.Set;
 
 @Entity @Table(name = "game_tables") @Data @AllArgsConstructor
 public class GameTable {
+
     @Id
     @GeneratedValue(generator = "create_encode_id")
     @GenericGenerator(name = "create_encode_id", strategy = "com.springboot.planning_poker.model.enity.generated_id.GeneratorTableID")
     private String id;
 
     @Column(name = "name", columnDefinition = "varchar(255) default 'Planning poker game'")
-    private String name = "Planning poker game";
+    private String name;
 
     @NotBlank(message = "voting isn't empty")
     @NotNull(message = "voting isn't null")
@@ -56,15 +57,9 @@ public class GameTable {
         joins.add(user);
         return this;
     }
-    public GameTable removeUsersJoin(User user){
+    public GameTable removeUsersJoin(User user) {
         joins.remove(user);
         return this;
     }
-
-//    public List<UserSocketRequest> getListUserSocketRequest(){
-//        return joins.stream().map(item -> new UserSocketRequest(item.getId(), item.getDisplayName())).collect(Collectors.toList());
-//    }
-
-
 }
 

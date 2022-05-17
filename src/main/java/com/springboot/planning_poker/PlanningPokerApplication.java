@@ -39,5 +39,7 @@ public class PlanningPokerApplication implements CommandLineRunner {
         roleBus.addRole(roleAdmin);
         User user = User.builder().id(null).displayName("testA").email("test@123.com").password(encoder.encode("123")).roles(Set.of(roleAdmin)).build();
         userBus.addUser(user);
+        User userUpdate = User.builder().id(null).displayName("testB").email("test@update.com").password(encoder.encode("123")).roles(Set.of(roleAdmin)).build();
+        userBus.addUser(userUpdate);
     }
 }

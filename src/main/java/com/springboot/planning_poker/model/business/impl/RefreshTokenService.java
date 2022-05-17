@@ -7,6 +7,7 @@ import java.util.UUID;
 import com.springboot.planning_poker.model.definition.StatusCode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import com.springboot.planning_poker.model.business.IRefreshToken;
@@ -19,6 +20,7 @@ import com.springboot.planning_poker.model.responsitory.UserRepo;
 import com.springboot.planning_poker.model.utils.JwtUtils;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.server.ResponseStatusException;
 
 @RequiredArgsConstructor @Service
 public class RefreshTokenService implements IRefreshToken{
@@ -40,6 +42,7 @@ public class RefreshTokenService implements IRefreshToken{
 	@Override
 	public RefreshToken createRefreshToken(Long userId) {
 		User user = userRepo.findById(userId).orElse(null);
+		if(user == null) throw new ResponseStatusException(HttpStatus.NOT_FOUND, StatusCode.USER_NOT_FOUND);
 		RefreshToken token = new RefreshToken();
 		token.setUser(user);
 		token.setToken(UUID.randomUUID().toString());
@@ -51,7 +54,7 @@ public class RefreshTokenService implements IRefreshToken{
 	public RefreshToken verifyExpiration(RefreshToken refreshToken) throws TokenException {
 		if(refreshToken.getExpiryDate().compareTo(Instant.now()) < 0) {
 			refreshTokenRepo.delete(refreshToken);
-			throw new TokenException(refreshToken.getToken(), "Refresh token is expired");
+			throw new TokenException(refreshToken.getToken(), StatusCode.REFRESH_TOKEN_EXPIRED);
 		}
 		return refreshToken;
 	}
