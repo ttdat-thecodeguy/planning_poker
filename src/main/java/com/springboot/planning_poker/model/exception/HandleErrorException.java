@@ -4,6 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -23,5 +24,12 @@ public class HandleErrorException {
 				}
 			}));
 		}
-	}	   
+	}
+	@ExceptionHandler(ResponseStatusException.class)
+	public ResponseEntity<?> handleException(ResponseStatusException ex, HttpServletRequest request, HttpServletResponse response) {
+		if(ex.getRawStatusCode() == HttpStatus.NOT_FOUND.value()){
+			return ResponseEntity.notFound().build();
+		}
+		return ResponseEntity.badRequest().body(String.format("error %d: %s", ex.getRawStatusCode(), ex.getMessage()));
+	}
 }
