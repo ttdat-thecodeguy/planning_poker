@@ -17,7 +17,6 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer  {
         //prefix sẽ nhận được message từ client
         // vd: stompClient.send('/app/add')
         config.setApplicationDestinationPrefixes("/app");
-        config.setUserDestinationPrefix("/users");
     }
 
     @Override
@@ -25,9 +24,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer  {
         // endpoint khi connect
         registry.addEndpoint("/ws")
                 .setAllowedOriginPatterns("*").withSockJS()
-                .setWebSocketEnabled(true)
-//                .setHeartbeatTime(25000)
-//                .setDisconnectDelay(500)
+                //được kích hoạt cho các trình duyệt không hỗ trợ SockJS, nó sẽ kích hoạt thư viện này
                 .setClientLibraryUrl("/webjars/sockjs-client/1.1.2/sockjs.js")
                 .setSessionCookieNeeded(false);
     }

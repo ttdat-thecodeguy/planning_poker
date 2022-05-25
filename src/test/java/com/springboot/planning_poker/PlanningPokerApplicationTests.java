@@ -25,19 +25,28 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.annotation.PostConstruct;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 @SpringBootTest
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class PlanningPokerApplicationTests {
+    @Autowired private IRole roleBus;
+    @Autowired private IUser userBus;
+    @Autowired private PasswordEncoder encoder;
 
-
-    @BeforeAll
-    public void initData(){
-
+    @PostConstruct
+    public void initData() throws Exception {
+        Role roleUser = new Role(RoleEnum.ROLE_USER);
+        Role roleAdmin = new Role(RoleEnum.ROLE_ADMIN);
+        roleBus.addRole(roleUser);
+        roleBus.addRole(roleAdmin);
+        User user = User.builder().id(null).displayName("testA").email("test@123.com").password(encoder.encode("123")).roles(Set.of(roleAdmin)).build();
+        userBus.addUser(user);
+        User userUpdate = User.builder().id(null).displayName("testB").email("test@update.com").password(encoder.encode("123")).roles(Set.of(roleAdmin)).build();
+        userBus.addUser(userUpdate);
     }
 
     @Test

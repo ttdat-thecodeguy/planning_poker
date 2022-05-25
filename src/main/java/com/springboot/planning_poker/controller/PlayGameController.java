@@ -20,7 +20,8 @@ import org.springframework.stereotype.Controller;
 import java.util.List;
 
 
-@Controller @Slf4j
+@Controller
+@Slf4j
 public class PlayGameController {
     @Autowired private IGameJoins gameJoinsBus;
     @Autowired private ITable tableBus;

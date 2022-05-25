@@ -12,7 +12,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.socket.messaging.SessionConnectedEvent;
 import org.springframework.web.socket.messaging.SessionDisconnectEvent;
 
-@Component @Slf4j
+@Component
+@Slf4j
 public class WebSocketEventListener {
     @Autowired private SimpMessageSendingOperations messageSendingOperations;
     @Autowired private IGameJoins gameJoins;

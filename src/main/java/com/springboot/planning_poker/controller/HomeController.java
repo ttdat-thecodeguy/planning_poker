@@ -14,7 +14,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
-@RestController @RequestMapping(value = "/api") @Slf4j
+@RestController
+@RequestMapping(value = "/api")
+@Slf4j
 public class HomeController {
     @Autowired private IUser userBus;
     @Autowired private IRefreshToken refreshTokenBus;

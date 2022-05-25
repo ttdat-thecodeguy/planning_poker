@@ -11,13 +11,6 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping(value = "/api/user")
 @Slf4j
-
-/*
-- cơ chế game revelel -> nhấn vô sẽ lấy toàn bộ thông tin điểm của các thành viên
-    - default -> tất cả thành viên
-    - set
-cơ chế tải ảnh : send picture to frontend -> edit it-> send to storage
- */
 public class UserController {
     @Autowired private IUser userBus;
     @Autowired private UserResponse response;

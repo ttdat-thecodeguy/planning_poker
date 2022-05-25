@@ -28,18 +28,9 @@ public class PlanningPokerApplication implements CommandLineRunner {
     public static void main(String[] args) {
         SpringApplication.run(PlanningPokerApplication.class, args);
     }
-    @Autowired private IRole roleBus;
-    @Autowired private IUser userBus;
-    @Autowired private PasswordEncoder encoder;
+
     @Override
     public void run(String... args) throws Exception {
-        Role roleUser = new Role(RoleEnum.ROLE_USER);
-        Role roleAdmin = new Role(RoleEnum.ROLE_ADMIN);
-        roleBus.addRole(roleUser);
-        roleBus.addRole(roleAdmin);
-        User user = User.builder().id(null).displayName("testA").email("test@123.com").password(encoder.encode("123")).roles(Set.of(roleAdmin)).build();
-        userBus.addUser(user);
-        User userUpdate = User.builder().id(null).displayName("testB").email("test@update.com").password(encoder.encode("123")).roles(Set.of(roleAdmin)).build();
-        userBus.addUser(userUpdate);
+
     }
 }
