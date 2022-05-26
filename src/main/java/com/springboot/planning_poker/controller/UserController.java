@@ -21,8 +21,7 @@ public class UserController {
         return ResponseEntity.ok().body(userBus.getUsers());
     }
 
-    //PUT HTTP method is used to modify/update a resource where the client sends data that updates the entire resource.
-    @PutMapping(value = "/update")
+    @PatchMapping(value = "/update")
     public ResponseEntity<?> updateUser(UserUpdateRequest user) throws Exception {
         userBus.updateUser(user);
         return ResponseEntity.ok("User Updated");

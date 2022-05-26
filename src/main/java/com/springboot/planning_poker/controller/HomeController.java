@@ -25,7 +25,7 @@ public class HomeController {
         return ResponseEntity.ok(userBus.signup(user));
     }
 
-    @PostMapping("/login") @CrossOrigin(origins="*", maxAge=3600)
+    @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest userLogin) throws Exception {
         log.info("Login");
         return ResponseEntity.ok(userBus.login(userLogin));
@@ -33,7 +33,6 @@ public class HomeController {
 
     @PostMapping("/signup-as-guest")
     public ResponseEntity<?> signUpAsGuest(@RequestBody User user,
-                                           @RequestParam String tableId,
                                            @RequestParam(required = false) Boolean isSpectator) {
         return ResponseEntity.ok(userBus.signupAsGuest(user, isSpectator));
     }

@@ -30,7 +30,7 @@ public class TableController {
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<?> getTableById(@PathVariable("id") String id ) throws Exception{
+    public ResponseEntity<?> getTableById(@PathVariable("id") String id ) {
         return ResponseEntity.ok(tableBus.findTableById(id));
     }
     @PatchMapping(value = "/update-owner")
@@ -39,7 +39,7 @@ public class TableController {
     }
 
     @PatchMapping(value = "/update-issue")
-    public ResponseEntity<?> addIssueInTable(@RequestBody TableUpdateIssue tableUpdateIssue) throws Exception {
+    public ResponseEntity<?> addIssueInTable(@RequestBody TableUpdateIssue tableUpdateIssue) {
         return ResponseEntity.ok(tableBus.updateTableIssue(tableUpdateIssue.getTableId(), tableUpdateIssue.getIssueId(), tableUpdateIssue.isAdd()));
     }
 
